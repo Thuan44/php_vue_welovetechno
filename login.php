@@ -3,13 +3,19 @@ include_once './admin/pdo.php';
 include_once './admin/functions.php';
 ?>
 
+<?php 
+if (isset($_POST)) {
+    login(@$_POST['user_email'], @$_POST['user_password']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Become a Dev</title>
+    <title>We Love Techno</title>
     <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="./css/style.css">
@@ -29,7 +35,7 @@ include_once './admin/functions.php';
 
             <input class="input-group input-login mb-2" type="email" name="user_email" placeholder="Your email" value="admin@gmail.com" required>
             <input class="input-group input-login mb-2" type="password" name="user_password" placeholder="Your Pasword" value="admin" required>
-            <input class="btn btn-primary w-100" type="submit" name="submit" value="Login">
+            <input class="btn btn-primary btn-sm w-100" type="submit" name="submit" value="Login">
 
         </form>
 

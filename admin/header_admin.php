@@ -11,8 +11,8 @@ include_once 'functions.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <title>We Love Techno</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>We Love Techno | Back-Office</title>
 </head>
 
 <body>
@@ -32,7 +32,7 @@ include_once 'functions.php';
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="add_product.php">ADD A PRODUCT</a>
-                        <a class="dropdown-item" href="#">UPDATE A PRODUCT</a>
+                        <a class="dropdown-item" href="update_product.php">UPDATE A PRODUCT</a>
                     </div>
                 </li>
                 <li class="nav-item mr-2">
@@ -42,12 +42,10 @@ include_once 'functions.php';
                     <a href="../logout.php" class="nav-link text-white sign-out">Log out <i class="fas fa-sign-out-alt"></i></a>
                 </li>
             </ul>
+            <!-- Greeting  -->
+            <small class="text-white mr-2 text-capitalize greeting">Welcome, admin.</small>
         </div>
 
-        <!-- Greeting  -->
-        <?php if (isset($_SESSION['user_name'])) { ?>
-            <small class="text-white mr-2 greeting">Welcome, admin.</small>
-        <?php } ?>
 
 
     </nav>

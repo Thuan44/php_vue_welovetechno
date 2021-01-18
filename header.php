@@ -20,7 +20,7 @@ include_once 'admin/functions.php';
     <div id="app">
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary d-flex justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <router-link class="navbar-brand font-weight-bold" to="/">We ♥︎ Techno</router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -29,8 +29,8 @@ include_once 'admin/functions.php';
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <input class="form-control form-control-sm mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
             </form>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -41,21 +41,21 @@ include_once 'admin/functions.php';
                 </li>
                 <!-- Sign out button -->
                 <?php if (isset($_SESSION['user_name'])) { ?>
-                    <li class="nav-item">
-                        <a href="logout.php" class="nav-link text-white sign-out"><i class="fas fa-sign-out-alt"></i></a>
+                    <li class="nav-item mr-0">
+                        <a href="logout.php" class="nav-link text-white">Logout <i class="fas fa-sign-out-alt"></i></a>
                     </li>
                 <?php } else { ?>
                     <li class="nav-item">
-                        <router-link to="/login" class="nav-link text-white sign-out">Login <i class="fas fa-sign-in-alt"></i></router-link>
+                        <a href="login.php" class="nav-link text-white">Login <i class="fas fa-sign-in-alt"></i></a>
                     </li>
                 <?php } ?>
             </ul>
+            <!-- Greeting  -->
+            <?php if (isset($_SESSION['user_name'])) { ?>
+                <small class="text-white greeting text-capitalize">Hi, <?php echo $_SESSION['user_name'] ?>.</small>
+            <?php } ?>
         </div>
 
-        <!-- Greeting  -->
-        <?php if (isset($_SESSION['user_name'])) { ?>
-            <small class="text-white mr-2 greeting">Hi, <?php echo $_SESSION['user_name'] ?>.</small>
-        <?php } ?>
 
     </nav>
     

@@ -1,7 +1,35 @@
 // GENERAL
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar {
+    padding: {
+        left: 50px;
+        right: 50px;
+    };
+}
+
 .small-divider {
     height: 1px;
     width: 20px;
     background-color: rgba(50, 50, 50, .2);
     margin: 10px auto 10px;
+}
+
+// NAVBAR
+.greeting {
+    position: absolute;
+    right: 60px;
+    top: 65px;
 }
