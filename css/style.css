@@ -1,1 +1,7 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+.small-divider {
+  height: 1px;
+  width: 20px;
+  background-color: rgba(50, 50, 50, 0.2);
+  margin: 10px auto 10px;
+}
+/*# sourceMappingURL=style.css.map */

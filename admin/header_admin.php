@@ -19,18 +19,24 @@ include_once 'functions.php';
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand font-weight-bold" href="index.php">We ♥︎ Techno | <span class="text-warning">Back-Office</span></a>
+        <a class="navbar-brand font-weight-bold" href="#">We ♥︎ Techno | <span class="text-warning">Back-Office</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item mr-2">
-                    <a class="nav-link text-white" href="index.php">Manage Products</a>
+                <li class="nav-item dropdown mr-2">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Manage Products
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="add_product.php">ADD A PRODUCT</a>
+                        <a class="dropdown-item" href="#">UPDATE A PRODUCT</a>
+                    </div>
                 </li>
                 <li class="nav-item mr-2">
-                    <a class="nav-link text-white" href="index.php">Manage Reviews</a>
+                    <a class="nav-link text-white" href="review_manager.php">Manage Reviews</a>
                 </li>
                 <li class="nav-item mr-2">
                     <a href="../logout.php" class="nav-link text-white sign-out">Log out <i class="fas fa-sign-out-alt"></i></a>
