@@ -36,7 +36,7 @@ include_once 'functions.php';
                     </div>
                 </li>
                 <li class="nav-item mr-2">
-                    <a class="nav-link text-white" href="review_manager.php">Manage Reviews</a>
+                    <a class="nav-link text-white" href="reviews.php">Manage Reviews</a>
                 </li>
                 <li class="nav-item mr-2">
                     <a href="../logout.php" class="nav-link text-white sign-out">Log out <i class="fas fa-sign-out-alt"></i></a>

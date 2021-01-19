@@ -58,7 +58,7 @@ include_once 'admin/functions.php';
 
         </nav>
 
-        <div class="second-nav">
+        <!-- <div class="second-nav">
             <ul class="d-flex">
                 <li class="nav-item">
                     <a href="#" class="nav-link">Smartphones</a>
@@ -70,7 +70,7 @@ include_once 'admin/functions.php';
                     <a href="#" class="nav-link">Accessories</a>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <!-- Router View -->
         <router-view></router-view>
