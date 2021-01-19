@@ -18,9 +18,9 @@ if (isset($_POST['add'])) {
 ?>
 
 
-<h1 class="rounded border p-2 m-4 text-center text-white bg-dark">Add a product</h1>
 
 <div class="container">
+    <h1 class="rounded border p-2 mt-5 mb-4  text-center text-white bg-dark">Add a product</h1>
 
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
 
@@ -64,24 +64,24 @@ if (isset($_POST['add'])) {
             <div class="row">
                 <div class="col-4">
                     <div class="form-group">
-                        <input class="form-control" type="text" name="product_name" placeholder="Product Name">
+                        <input class="form-control" type="text" name="product_name" placeholder="Choose a name">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <input class="form-control" type="text" name="product_price" placeholder="Product Price">
+                        <input class="form-control" type="text" name="product_price" placeholder="Choose a price">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <input class="form-control" type="text" name="product_stock" placeholder="Quantity in stock">
+                        <input class="form-control" type="text" name="product_stock" placeholder="Set the quantity in stock">
                     </div>
                 </div>
             </div>
 
             <!-- Description -->
             <div class="form-group">
-                <textarea class="form-control" name="product_description" id="Product Description" value="Product Description" rows="3" style="color: #919AA1;">Product Description</textarea>
+                <textarea class="form-control" name="product_description" id="Product description" value="Add a description" rows="3" style="color: #919AA1;">Product description</textarea>
             </div>
 
             <!-- Upload image -->
@@ -89,7 +89,7 @@ if (isset($_POST['add'])) {
                 <div class="input-group mb-3">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="inputGroupFile02">
-                        <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                        <label class="custom-file-label" for="inputGroupFile02">Choose a file</label>
                     </div>
                     <div class="input-group-append">
                         <span class="input-group-text">Upload</span>

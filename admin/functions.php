@@ -80,11 +80,11 @@ function listBrands() {
     return $result->fetchAll();
 }
 
-// List of brands (product to be updated)
-function listBrandsByCategory($categoryId) {
+// List of products
+function listProducts($categoryId, $brandId) {
     global $connection;
 
-    $query = "SELECT * FROM products WHERE category_id = $categoryId";
+    $query = "SELECT * FROM products WHERE category_id = $categoryId AND brand_id = $brandId";
     $result = $connection->prepare($query);
     $result->execute();
     return $result->fetchAll();
@@ -101,4 +101,45 @@ function addProduct($brandId, $productName, $productDescription, $productPrice, 
     $result->execute(array(
         $brandId, $productName, $productDescription, $productPrice, $productStock, $categoryId
     ));
+}
+
+
+# UPDATE PRODUCT =============
+// Get article by id (and display values in inputs)
+function getProductById($productId) {
+    global $connection;
+
+    $query = "SELECT * FROM products WHERE product_id = $productId";
+    $result = $connection->prepare($query);
+    $result->execute();
+    return $result->fetch();
+}
+
+// Update product
+function updateProduct($productId, $productName, $productPrice, $productStock, $productDescription) {
+    global $connection;
+
+    $query = "UPDATE products
+            SET product_name = :productName,
+            product_price = :productPrice,
+            product_stock = :productStock,
+            product_description = :productDescription
+            WHERE product_id = :productId";
+    $result = $connection->prepare($query);
+    $result->execute(array(
+        ':productId' => $productId,
+        ':productName' => $productName,
+        ':productPrice' => $productPrice,
+        ':productStock' => $productStock,
+        ':productDescription' => $productDescription
+    ));
+}
+
+// Delete Product
+function deleteProduct($productId) {
+    global $connection;
+
+    $query = "DELETE FROM products WHERE product_id = $productId";
+    $result = $connection->prepare($query);
+    $result->execute();
 }
