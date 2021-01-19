@@ -50,11 +50,55 @@ function verifyInput($var) {
 function signUp($userName, $userEmail, $userPassword) {
     global $connection;
     
-    $query = "INSERT INTO users (user_name, user_email, user_password) VALUES (:userName, :userEmail, :userPassword)";
+    $query = "INSERT INTO users (user_name, user_email, user_password) VALUES (?, ?, ?)";
     $result = $connection->prepare($query);
     $result->execute(array( 
-        ':userName' => $userName,
-        ':userEmail' => $userEmail,
-        ':userPassword' => $userPassword
+        $userName,
+        $userEmail,
+        $userPassword
+    ));
+}
+
+
+# DISPLAY LISTS =============
+function listCategories() {
+    global $connection;
+
+    $query = "SELECT * FROM categories";
+    $result = $connection->prepare($query);
+    $result->execute();
+    return $result->fetchAll();
+}
+
+// List of brands
+function listBrands() {
+    global $connection;
+
+    $query = "SELECT * FROM brands";
+    $result = $connection->prepare($query);
+    $result->execute();
+    return $result->fetchAll();
+}
+
+// List of brands (product to be updated)
+function listBrandsByCategory($categoryId) {
+    global $connection;
+
+    $query = "SELECT * FROM products WHERE category_id = $categoryId";
+    $result = $connection->prepare($query);
+    $result->execute();
+    return $result->fetchAll();
+}
+
+
+# ADD PRODUCT =============
+function addProduct($brandId, $productName, $productDescription, $productPrice, $productStock, $categoryId) {
+    global $connection;
+
+    $query = "INSERT INTO products (brand_id, product_name, product_description, product_price, product_stock, category_id)
+            VALUES (?, ?, ?, ?, ?, ?)";
+    $result = $connection->prepare($query);
+    $result->execute(array(
+        $brandId, $productName, $productDescription, $productPrice, $productStock, $categoryId
     ));
 }

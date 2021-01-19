@@ -21,7 +21,7 @@ include_once 'admin/functions.php';
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <router-link class="navbar-brand font-weight-bold" to="/">We ♥︎ Techno</router-link>
+        <router-link class="navbar-brand font-weight-bold" to="/">We <span class="text-warning">♥︎</span> Techno</router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,19 +34,19 @@ include_once 'admin/functions.php';
             </form>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <router-link class="nav-link text-white" to="/contact">Contact <i class="fas fa-comment"></i></router-link>
+                    <router-link class="nav-link text-white" to="/contact">Contact <span class="text-warning"><i class="fas fa-comment"></i></span></router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link text-white" to="/cart">Cart <i class="fas fa-shopping-cart"></i></router-link>
+                    <router-link class="nav-link text-white" to="/cart">Cart <span class="text-warning"><i class="fas fa-shopping-cart"></i></span></router-link>
                 </li>
                 <!-- Sign out button -->
                 <?php if (isset($_SESSION['user_name'])) { ?>
                     <li class="nav-item mr-0">
-                        <a href="logout.php" class="nav-link text-white">Logout <i class="fas fa-sign-out-alt"></i></a>
+                        <a href="logout.php" class="nav-link text-white">Logout <span class="text-warning"><i class="fas fa-sign-out-alt"></i></span></a>
                     </li>
                 <?php } else { ?>
                     <li class="nav-item">
-                        <a href="login.php" class="nav-link text-white">Login <i class="fas fa-sign-in-alt"></i></a>
+                        <a href="login.php" class="nav-link text-white">Login <span class="text-warning"><i class="fas fa-sign-in-alt"></i></span></a>
                     </li>
                 <?php } ?>
             </ul>

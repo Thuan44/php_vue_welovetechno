@@ -27,9 +27,26 @@ p {
     margin: 10px auto 10px;
 }
 
+.btn-midradius {
+    border-top-left-radius: 20px; 
+    border-bottom-right-radius: 20px;
+}
+
+
 // NAVBAR
 .greeting {
     position: absolute;
     right: 60px;
     top: 65px;
+}
+
+// Back-Office Homepage
+.card-heading {
+    width: 300px;
+    font-weight: 900;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

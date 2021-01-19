@@ -19,7 +19,7 @@ include_once 'functions.php';
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand font-weight-bold" href="#">We ♥︎ Techno | <span class="text-warning">Back-Office</span></a>
+        <a class="navbar-brand font-weight-bold" href="index.php">We <span class="text-warning">♥︎</span> Techno | <span class="text-warning">Back-Office</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -45,7 +45,5 @@ include_once 'functions.php';
             <!-- Greeting  -->
             <small class="text-white mr-2 text-capitalize greeting">Welcome, admin.</small>
         </div>
-
-
 
     </nav>
