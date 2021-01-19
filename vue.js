@@ -38,5 +38,6 @@ const router = new VueRouter({
 
 // Vue Instance ============
 const vue = new Vue({
-    router
+    router,
+    components: {Home, Contact, Cart}
 }).$mount('#app');
