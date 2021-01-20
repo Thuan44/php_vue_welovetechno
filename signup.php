@@ -43,7 +43,7 @@ $isSuccess = false;
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body>
+<body style="background-color: #fff">
 
     <h1 class="rounded border p-2 m-4 text-center text-white bg-primary text-uppercase">We already <span class="text-warning">♥︎</span> you!</h1>
 
@@ -59,28 +59,28 @@ $isSuccess = false;
 
                     <div class="row">
                         <!-- Name -->
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-3">
                             <label for="name">Your name*</label>
                             <input type="text" id="name" name="name" class="form-control" value="">
                             <p class="comments text-danger"><?php echo $nameError; ?></p>
                         </div>
 
                         <!-- Email -->
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-3">
                             <label for="email">Email*</label>
                             <input type="text" id="email" name="email" class="form-control" value="">
                             <p class="comments text-danger"><?php echo $emailError; ?></p>
                         </div>
 
                         <!-- Password-->
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-3">
                             <label for="password">Choose a password*</label>
                             <input type="password" id="password" name="password" class="form-control" value="">
                             <p class="comments"><?php echo $passwordError; ?></p>
                         </div>
 
                         <!-- Required info -->
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-3">
                             <p class="font-italic">*These fields are required</p>
                         </div>
 

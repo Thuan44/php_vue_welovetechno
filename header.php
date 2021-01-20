@@ -11,6 +11,9 @@ include_once 'admin/functions.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Suez+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
     <title>We Love Techno</title>
 </head>
@@ -20,17 +23,17 @@ include_once 'admin/functions.php';
     <div id="app">
 
         <!-- NAVBAR -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
-            <router-link class="navbar-brand font-weight-bold" to="/">We <span class="text-warning">♥︎</span> Techno</router-link>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg fixed-top">
+            <router-link class="navbar-brand font-weight-bold" style="border: 2px solid #fff; border-radius: 50px; padding: 5px 10px" to="/">We <span class="text-warning">♥︎</span> Techno</router-link>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarColor01">
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control form-control-sm mr-sm-2" style="width: 300px;" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline my-2 my-lg-0 search-bar">
+                    <input class="form-control form-control-sm mr-sm-2 search-input" style="width: 300px; border-radius: 50px;" type="search" placeholder="Looking for something ?" aria-label="Search">
+                    <button class="btn btn-outline-success btn-sm my-2 my-sm-0" style="border-radius: 50px;" type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -50,20 +53,21 @@ include_once 'admin/functions.php';
                         </li>
                     <?php } ?>
                 </ul>
-                <!-- Greeting  -->
-                <?php if (isset($_SESSION['user_name'])) { ?>
-                    <small class="text-white greeting text-capitalize">Hi, <?php echo $_SESSION['user_name'] ?>.</small>
-                <?php } ?>
             </div>
-
+            
         </nav>
-
-        <div class="second-nav bg-primary pl-5 pb-1">
+        
+        
+        <div class="second-nav bg-primary pb-1 shadow-lg">
             <ul class="d-flex list-unstyled">
                 <li v-for="category in categories" class="nav-item">
                     <a href="#" class="nav-link text-white p-0">{{ category.category_name }}</a>
                 </li>
             </ul>
+            <!-- Greeting  -->
+            <?php if (isset($_SESSION['user_name'])) { ?>
+                <small class="text-white greeting-guest text-capitalize">Hi, <?php echo $_SESSION['user_name'] ?>.</small>
+            <?php } ?>
         </div>
 
         <!-- Router View -->

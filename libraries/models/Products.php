@@ -15,7 +15,9 @@ class Products
   {
     $sql = $this->pdo->query("
       SELECT * 
-      FROM products 
+      FROM products
+      INNER JOIN brands ON products.brand_id = brands.brand_id
+      INNER JOIN images ON products.product_id = images.product_id
     ");
     $sql->setFetchMode(\PDO::FETCH_ASSOC);
 

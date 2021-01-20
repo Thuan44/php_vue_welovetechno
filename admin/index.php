@@ -6,7 +6,7 @@
 
     <div class="row">
 
-        <div class="col-4">
+        <div class="col-4 back-office-card">
             <a href="add_product.php">
                 <div class="card mb-3 rounded shadow-sm">
                     <h4 class="card-header text-center text-white bg-dark">Add a Product</h4>
@@ -15,7 +15,7 @@
             </a>
         </div>
 
-        <div class="col-4">
+        <div class="col-4 back-office-card">
             <a href="update_product.php">
                 <div class="card mb-3 rounded shadow-sm">
                     <h4 class="card-header text-center">Update Products</h4>
@@ -24,7 +24,7 @@
             </a>
         </div>
 
-        <div class="col-4">
+        <div class="col-4 back-office-card">
             <a href="reviews.php">
                 <div class="card mb-3 rounded shadow-sm">
                     <h4 class="card-header text-center text-white bg-dark">Manage Reviews</h4>

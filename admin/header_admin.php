@@ -15,7 +15,7 @@ include_once 'functions.php';
     <title>We Love Techno | Back-Office</title>
 </head>
 
-<body>
+<body style="background-color: #fff;">
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

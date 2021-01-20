@@ -22,7 +22,7 @@ if (isset($_POST['add'])) {
 <div class="container">
     <h1 class="rounded border p-2 mt-5 mb-4  text-center text-white bg-dark">Add a product</h1>
 
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])  ?>" enctype="multipart/form-data" method="POST">
 
         <fieldset>
 
@@ -88,7 +88,7 @@ if (isset($_POST['add'])) {
             <div class="form-group">
                 <div class="input-group mb-3">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile02">
+                        <input type="file" name="file[]" multiple="multiple" class="custom-file-input" id="inputGroupFile02">
                         <label class="custom-file-label" for="inputGroupFile02">Choose a file</label>
                     </div>
                     <div class="input-group-append">

@@ -21,7 +21,7 @@ if (isset($_POST)) {
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body>
+<body style="background-color: #fff">
 
     <h1 class="rounded border p-2 m-4 text-center text-white bg-primary text-uppercase">We <span class="text-warning">♥︎</span> Techno. Do <span class="text-warning">you</span> ?</h1>
 
