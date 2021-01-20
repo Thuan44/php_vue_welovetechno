@@ -1,9 +1,9 @@
 <?php
 
 // Product list
-require_once(dirname(__DIR__) . '/models/Products.php');
+require_once(dirname(__DIR__) . '/models/Categories.php');
 
-$model = new Products();
+$model = new Categories();
 
 $sql = $model->list('');
 

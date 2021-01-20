@@ -58,19 +58,13 @@ include_once 'admin/functions.php';
 
         </nav>
 
-        <!-- <div class="second-nav">
-            <ul class="d-flex">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Smartphones</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Computers</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Accessories</a>
+        <div class="second-nav bg-primary pl-5 pb-1">
+            <ul class="d-flex list-unstyled">
+                <li v-for="category in categories" class="nav-item">
+                    <a href="#" class="nav-link text-white p-0">{{ category.category_name }}</a>
                 </li>
             </ul>
-        </div> -->
+        </div>
 
         <!-- Router View -->
         <router-view></router-view>
