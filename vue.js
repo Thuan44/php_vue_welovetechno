@@ -36,24 +36,84 @@ const Home = {
                 <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">All our products</h1><p class="text-center" style="color: #777">The best high-tech devices at the lowest possible price</^>
                 <div class="divider"></div>
 
-                <div class="row">
-                
-                </div>
+                <aside class="filter-sidebar">
+                    <div class="card">
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Price </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                <div class="form-row">
+                                <div class="form-group col-md-6">
+                                <label>Min</label>
+                                <input type="number" class="form-control" id="inputEmail4" placeholder="$0">
+                                </div>
+                                <div class="form-group col-md-6 text-right">
+                                <label>Max</label>
+                                <input type="number" class="form-control" placeholder="$2,0000">
+                                </div>
+                                </div>
+                                </div> <!-- card-body.// -->
+                            </div>
+                        </article> <!-- card-group-item.// -->
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Brands</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div v-for="product in brands">
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">7</span>
+                                            <input type="checkbox" class="custom-control-input" :id="product.brand_name" :value="product.brand_name" v-model="selectedBrands">
+                                            <label class="custom-control-label" :for="product.brand_name">{{ product.brand_name }}</label>
+                                        </div> <!-- form-check.// -->
+                                    </div>
+                                </div> <!-- card-body.// -->
+                            </div>
+                        </article> <!-- card-group-item.// -->
+                    </div> <!-- card.// -->
+                </aside> <!-- col.// -->
 
-                <div class="row justify-content-center">
-                    <div v-for="product in this.$root.products" class="mt-4">
-                        <div class="col-4">
-                            <div class="card product-card shadow-sm p-3" style="width: 20rem;">
-                                <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
-                                <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
-                                <p v-if="product.product_stock == 0" class="card-text stock lead text-center" style="color: red">OUT OF STOCK !</p>
-                                <div class="card-body d-flex flex-column -justify-content-center">
-                                    <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
-                                    <p class="card-text mb-3">{{ product.brand_name }}</p>
-                                    <h4 class="product-price">\${{ product.product_price }}</h4>
-                                    <div class="d-flex justify-content-center">
-                                        <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                        <button class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                <div v-if="selectedBrands.length > 0">
+                    <div class="row justify-content-center cards-container">
+                        <div v-for="product in filteredProducts" class="mt-4">
+                            <div class="col-4">
+                                <div class="card product-card shadow-sm p-3" style="width: 20rem;">
+                                    <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
+                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
+                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center" style="color: red">OUT OF STOCK !</p>
+                                    <div class="card-body d-flex flex-column -justify-content-center">
+                                        <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
+                                        <p class="card-text mb-3">{{ product.brand_name }}</p>
+                                        <h4 class="product-price">\${{ product.product_price }}</h4>
+                                        <div class="d-flex justify-content-center">
+                                            <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <button class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="row justify-content-center cards-container">
+                        <div v-for="product in products" class="mt-4">
+                            <div class="col-4">
+                                <div class="card product-card shadow-sm p-3" style="width: 20rem;">
+                                    <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
+                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
+                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center" style="color: red">OUT OF STOCK !</p>
+                                    <div class="card-body d-flex flex-column -justify-content-center">
+                                        <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
+                                        <p class="card-text mb-3">{{ product.brand_name }}</p>
+                                        <h4 class="product-price">\${{ product.product_price }}</h4>
+                                        <div class="d-flex justify-content-center">
+                                            <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <button class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -68,11 +128,23 @@ const Home = {
     name: 'Home',
     data: () => {
         return {
-            
+            selectedBrands: []
+        }
+    },
+    computed: {
+        products() {
+            return this.$root.products
+        },
+        brands() {
+            return this.$root.brands
+        },
+        filteredProducts() {
+            let filteredProducts = this.products.filter(product => this.selectedBrands.includes(product.brand_name));
+            return filteredProducts;
         }
     },
     methods: {
-        getImgUrl(picture) {
+        getImgUrl(picture) {
             return "./assets/" + picture;
         }
     }
@@ -87,14 +159,58 @@ const ProductSheet = {
 
 // Contact Page
 const Contact = {
-    template: '<h1>Contact</h1>',
+    template: `
+    <div>
+
+        <h1>Contact</h1>
+
+        <p>Here is my para</p>
+    </div>
+    `,
     name: 'Contact'
 }
 
 
 // Cart Page
 const Cart = {
-    template: '<h1>Cart</h1>',
+    template: `
+    <div>
+
+        <div class="container">
+
+            <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your cart</^>
+            <div class="divider"></div>
+
+            <table class="table table-hover border">
+                <thead>
+                    <tr class="text-white text-center font-weight-bold" style="background-color: #1A1A1A !important">
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col" class="text-right">Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-default text-center">
+                        <th scope="row"><button type="submit" class="btn btn-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></th>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>5.00€</td>
+                        <td class="text-right">30.00€</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="total-group">
+                <div></div>
+            </div>
+
+        </div>
+
+    </div>
+    `,
     name: 'Cart'
 }
 
@@ -115,7 +231,8 @@ const vue = new Vue({
     data: () => {
         return {
             products: [],
-            categories: []
+            categories: [],
+            brands: [],
         }
     },
     mounted() {
@@ -126,13 +243,20 @@ const vue = new Vue({
             .then((response) => {
                 this.products = response;
             }),
-        
-        axios
-            .get('libraries/controllers/getDataCategories.php')
-            .then((response) => response.data)
-            .then((response) => {
-                this.categories = response;
-            })
+
+            axios
+                .get('libraries/controllers/getDataCategories.php')
+                .then((response) => response.data)
+                .then((response) => {
+                    this.categories = response;
+                }),
+
+            axios
+                .get('libraries/controllers/getDataBrands.php')
+                .then((response) => response.data)
+                .then((response) => {
+                    this.brands = response;
+                })
     },
     router,
     components: { Home, Contact, Cart, ProductSheet }
