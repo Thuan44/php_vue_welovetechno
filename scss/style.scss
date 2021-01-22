@@ -169,8 +169,35 @@ p {
 
 
 // CART
+.cart-table {
+    border: 1px solid rgba(26, 26, 26, .5) !important;
+}
+
 .btn-cart-delete {
     padding: 5px 10px !important;
+}
+
+.total-group {
+    margin-top: 20px;
+    float: right;
+}
+
+label.form-control {
+    font-size: .8rem;
+}
+
+.total-label {
+    width: 50%;
+    font-size: .8rem;
+}
+
+input.form-control {
+    font-size: .8rem;
+}
+
+.total-input {
+    width: 50%;
+    border: 1px solid rgba(26, 26, 26, .5) !important;
 }
 
 

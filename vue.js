@@ -33,7 +33,7 @@ const Home = {
 
             <div class="container-fluid">
             
-                <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">All our products</h1><p class="text-center" style="color: #777">The best high-tech devices at the lowest possible price</^>
+                <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">All our products</h1><p class="text-center" style="color: #777">The best high-tech devices at the lowest possible price</p>
                 <div class="divider"></div>
 
                 <aside class="filter-sidebar">
@@ -112,7 +112,7 @@ const Home = {
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <button @click="addToCart(product.product_id, product.user_id, 1)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -146,9 +146,23 @@ const Home = {
     methods: {
         getImgUrl(picture) {
             return "./assets/" + picture;
+        },
+        addToCart(productId, userId, productQuantity) {
+            axios
+                .post('libraries/controllers/postDataCart.php', {
+                    product_id: productId,
+                    user_id: userId,
+                    product_quantity: productQuantity
+                })
+                .then((response) => {
+                    console.log(response);
+                  }, (error) => {
+                    console.log(error);
+                  });
         }
     }
 }
+
 
 // Product Sheet
 const ProductSheet = {
@@ -178,34 +192,42 @@ const Cart = {
 
         <div class="container">
 
-            <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your cart</^>
+            <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your articles</p>
             <div class="divider"></div>
 
-            <table class="table table-hover border">
+            <table class="table table-hover cart-table shadow-sm">
                 <thead>
                     <tr class="text-white text-center font-weight-bold" style="background-color: #1A1A1A !important">
                         <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col">Product</th>
+                        <th scope="col" colspan="2">Product</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Unit Price</th>
                         <th scope="col" class="text-right">Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-default text-center">
+                    <tr class="table-light text-center">
                         <th scope="row"><button type="submit" class="btn btn-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></th>
-                        <td>Column content</td>
-                        <td>Column content</td>
-                        <td>5.00€</td>
-                        <td class="text-right">30.00€</td>
+                        <td class="align-middle">Product Image</td>
+                        <td class="align-middle">Product Name</td>
+                        <td class="align-middle">Column content</td>
+                        <td class="align-middle">$5.00</td>
+                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">$30.00</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="total-group">
-                <div></div>
-            </div>
+            <form action="#">
+                <div class="total-group d-flex flex-column">
+                    <div class="d-flex align-items-center total-to-pay form-group mb-2 shadow-sm">
+                        <label for="total-to-pay" class="mb-0 total-label bg-primary text-white form-control text-uppercase text-center">Total to Pay</label>
+                        <input id="total-to-pay" class="text-right total-input form-control bg-light" value="$100.00"></input>
+                    </div>
+                    <div class="btn-checkout shadow-sm">
+                        <button type="submit" class="btn btn-success form-control">Proceed to Checkout <span class="pl-1"><i class="fas fa-credit-card"></i></span></button>
+                    </div>
+                </div>
+            </form>
 
         </div>
 
@@ -239,24 +261,15 @@ const vue = new Vue({
         // Products
         axios
             .get('libraries/controllers/getData.php')
-            .then((response) => response.data)
-            .then((response) => {
-                this.products = response;
-            }),
+            .then(response => (this.products = response.data))
 
             axios
                 .get('libraries/controllers/getDataCategories.php')
-                .then((response) => response.data)
-                .then((response) => {
-                    this.categories = response;
-                }),
+                .then(response => (this.categories = response.data))
 
             axios
                 .get('libraries/controllers/getDataBrands.php')
-                .then((response) => response.data)
-                .then((response) => {
-                    this.brands = response;
-                })
+                .then(response => (this.brands = response.data))
     },
     router,
     components: { Home, Contact, Cart, ProductSheet }
