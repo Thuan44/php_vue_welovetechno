@@ -1,11 +1,14 @@
 <?php 
 
+session_start();
+
 $connect = new PDO("mysql:host=localhost;dbname=welovetechno", "root", "root");
-
 $received_data = json_decode(file_get_contents("php://input"));
-
 $data = array();
 
+@$userId = $_SESSION['user_id'];
+
+# FETCH TABLES
 // Get all products joined with brands and images
 if($received_data->action == 'fetchallproducts')
 {
@@ -46,6 +49,28 @@ if($received_data->action == 'fetchallbrands')
         $data[] = $row;
     }
     echo json_encode($data);
+}
+
+
+# ADD TO CART ==================
+// Add single product
+if($received_data->action == 'addsingleproducttocart')
+{
+    global $userId;
+
+    $data = array(
+        ':productId' => $received_data->productId
+    );
+
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+
+    $output = array(
+        'message' => 'Product added to your cart !'
+    );
+
+    echo json_encode($output);
 }
 
 ?>
