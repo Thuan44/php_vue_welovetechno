@@ -73,4 +73,24 @@ if($received_data->action == 'addsingleproducttocart')
     echo json_encode($output);
 }
 
+
+# CART ===============
+// Get all products in cart
+if($received_data->action == 'fetchallproductsincart')
+{
+    $query = "SELECT * FROM cart
+            INNER JOIN products ON cart.product_id = products.product_id
+            INNER JOIN images ON cart.product_id = images.product_id";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data[] = $row;
+    }
+    echo json_encode($data);
+}
+
+
 ?>
+
+

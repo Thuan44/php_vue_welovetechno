@@ -173,6 +173,22 @@ p {
 
 .btn-cart-delete {
   padding: 5px 10px !important;
+  font-size: 1.2rem !important;
+  -webkit-transition: all .1s;
+  transition: all .1s;
+}
+
+.btn-cart-delete:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
+.cart-img {
+  width: 50px;
+}
+
+.cart-img img {
+  width: 100%;
 }
 
 .total-group {

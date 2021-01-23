@@ -170,10 +170,25 @@ p {
 // CART
 .cart-table {
     border: 1px solid rgba(26, 26, 26, .5) !important;
+
 }
 
 .btn-cart-delete {
     padding: 5px 10px !important;
+    font-size: 1.2rem !important;
+    transition: all .1s;
+}
+
+.btn-cart-delete:hover {
+    transform: scale(1.2);
+}
+
+.cart-img {
+    width: 50px;
+
+    img {
+        width: 100%;
+    }
 }
 
 .total-group {

@@ -71,4 +71,4 @@ include_once 'admin/functions.php';
         </div>
 
         <!-- Router View -->
-        <router-view></router-view>
+        <router-view :key="$route.path"></router-view>

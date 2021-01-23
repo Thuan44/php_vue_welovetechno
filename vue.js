@@ -111,7 +111,7 @@ const Home = {
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
-                                            <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
                                             <button @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
@@ -216,12 +216,12 @@ const Cart = {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="table-light text-center">
-                        <th scope="row"><button type="submit" class="btn btn-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></th>
-                        <td class="align-middle">Product Image</td>
-                        <td class="align-middle">Product Name</td>
-                        <td class="align-middle">Column content</td>
-                        <td class="align-middle">$5.00</td>
+                    <tr v-for="product in allProductsInCart" class="table-light text-center">
+                        <th scope="row"><button type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></th>
+                        <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
+                        <td class="align-middle text-left">{{ product.product_name }}</td>
+                        <td class="align-middle">{{ product.product_quantity }}</td>
+                        <td class="align-middle">\${{ product.product_price }}</td>
                         <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">$30.00</td>
                     </tr>
                 </tbody>
@@ -243,7 +243,28 @@ const Cart = {
 
     </div>
     `,
-    name: 'Cart'
+    name: 'Cart',
+    data: () => {
+        return {
+            allProductsInCart: '',
+        }
+    },
+    methods: {
+        getImgUrl(picture) {
+            return "./assets/" + picture;
+        },
+        // Get all products in cart
+        fetchAllProductsInCart() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchallproductsincart'
+                }).then(response => (this.allProductsInCart = response.data))
+        },
+    },
+    created() {
+        // Call function fetchAllCategories
+        this.fetchAllProductsInCart();
+    },
 }
 
 
@@ -251,7 +272,7 @@ const Cart = {
 const router = new VueRouter({
     routes: [
         { path: '/', component: Home, name: 'Home' },
-        { path: '/product-sheet', component: ProductSheet, name: 'ProductSheet' },
+        { path: '/product-sheet/:id', component: ProductSheet, name: 'ProductSheet' },
         { path: '/contact', component: Contact, name: 'Contact' },
         { path: '/cart', component: Cart, name: 'Cart' }
     ],
