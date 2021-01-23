@@ -90,7 +90,7 @@ const Home = {
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <button @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -105,14 +105,14 @@ const Home = {
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
                                     <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
-                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center" style="color: red">OUT OF STOCK !</p>
+                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger">OUT OF STOCK !</p>
                                     <div class="card-body d-flex flex-column -justify-content-center">
                                         <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
-                                            <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button @click="addToCart(product.product_id, myvar, 1)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <router-link :to="{name: 'ProductSheet', params: {id: product.product_id}}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <button @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -143,14 +143,13 @@ const Home = {
         getImgUrl(picture) {
             return "./assets/" + picture;
         },
-        addToCart() {
+        addToCart(productId) {
             axios
-                .post('libraries/controllers/postDataCart.php')
-                .then((response) => {
-                    console.log(response);
-                }, (error) => {
-                    console.log(error);
-                });
+                .post('./admin/action.php', {
+                    action: 'addsingleproducttocart',
+                    productId: productId
+                })
+                .then(response => alert(response.data.message))
         },
         // Get all products from database
         fetchAllProducts() {
@@ -252,7 +251,7 @@ const Cart = {
 const router = new VueRouter({
     routes: [
         { path: '/', component: Home, name: 'Home' },
-        { path: '/product-sheet', component: ProductSheet, name: 'ProductSheet' },
+        { path: '/product-sheet/:id', component: ProductSheet, name: 'ProductSheet' },
         { path: '/contact', component: Contact, name: 'Contact' },
         { path: '/cart', component: Cart, name: 'Cart' }
     ],
