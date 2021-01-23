@@ -111,7 +111,7 @@ const Home = {
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
-                                            <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
                                             <button @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
@@ -251,7 +251,7 @@ const Cart = {
 const router = new VueRouter({
     routes: [
         { path: '/', component: Home, name: 'Home' },
-        { path: '/product-sheet', component: ProductSheet, name: 'ProductSheet' },
+        { path: '/product-sheet/:id', component: ProductSheet, name: 'ProductSheet' },
         { path: '/contact', component: Contact, name: 'Contact' },
         { path: '/cart', component: Cart, name: 'Cart' }
     ],
