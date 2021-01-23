@@ -60,7 +60,7 @@ include_once 'admin/functions.php';
         
         <div class="second-nav bg-primary pb-1 shadow-lg">
             <ul class="d-flex list-unstyled">
-                <li v-for="category in categories" class="nav-item">
+                <li v-for="category in allCategories" class="nav-item">
                     <a href="#" class="nav-link text-white p-0">{{ category.category_name }}</a>
                 </li>
             </ul>

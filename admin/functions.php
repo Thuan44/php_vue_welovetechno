@@ -3,6 +3,13 @@ session_start();
 
 ?>
 
+<!-- <?php $session_value=(isset($_SESSION['user_id']))?$_SESSION['user_id']:''; ?>
+    <script type="text/javascript">
+        var userId='<?php echo $session_value;?>';
+    </script>
+    <script type="text/javascript" src="../vue.js"></script> -->
+
+
 <?php 
 
 # LOGIN ================

@@ -63,7 +63,7 @@ const Home = {
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                    <div v-for="product in brands">
+                                    <div v-for="product in allBrands">
                                         <div class="custom-control custom-checkbox">
                                             <span class="float-right badge badge-light round">7</span>
                                             <input type="checkbox" class="custom-control-input" :id="product.brand_name" :value="product.brand_name" v-model="selectedBrands">
@@ -100,7 +100,7 @@ const Home = {
                 </div>
                 <div v-else>
                     <div class="row justify-content-center cards-container">
-                        <div v-for="product in products" class="mt-4">
+                        <div v-for="product in allProducts" class="mt-4">
                             <div class="col-4">
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
@@ -112,7 +112,7 @@ const Home = {
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button @click="addToCart(product.product_id, product.user_id, 1)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <button @click="addToCart(product.product_id, myvar, 1)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -128,38 +128,49 @@ const Home = {
     name: 'Home',
     data: () => {
         return {
-            selectedBrands: []
+            selectedBrands: [],
+            allProducts: '',
+            allBrands: '',
         }
     },
     computed: {
-        products() {
-            return this.$root.products
-        },
-        brands() {
-            return this.$root.brands
-        },
         filteredProducts() {
-            let filteredProducts = this.products.filter(product => this.selectedBrands.includes(product.brand_name));
+            let filteredProducts = this.allProducts.filter(product => this.selectedBrands.includes(product.brand_name));
             return filteredProducts;
-        }
+        },
     },
     methods: {
         getImgUrl(picture) {
             return "./assets/" + picture;
         },
-        addToCart(productId, userId, productQuantity) {
+        addToCart() {
             axios
-                .post('libraries/controllers/postDataCart.php', {
-                    product_id: productId,
-                    user_id: userId,
-                    product_quantity: productQuantity
-                })
+                .post('libraries/controllers/postDataCart.php')
                 .then((response) => {
                     console.log(response);
-                  }, (error) => {
+                }, (error) => {
                     console.log(error);
-                  });
-        }
+                });
+        },
+        // Get all products from database
+        fetchAllProducts() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchallproducts'
+                }).then(response => (this.allProducts = response.data))
+        },
+        // Get all products from database
+        fetchAllBrands() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchallbrands'
+                }).then(response => (this.allBrands = response.data))
+        },
+    },
+    created() {
+        // Call fetchAll functions
+        this.fetchAllProducts();
+        this.fetchAllBrands();
     }
 }
 
@@ -252,24 +263,21 @@ const router = new VueRouter({
 const vue = new Vue({
     data: () => {
         return {
-            products: [],
-            categories: [],
-            brands: [],
+            allCategories: '',
         }
     },
-    mounted() {
-        // Products
-        axios
-            .get('libraries/controllers/getData.php')
-            .then(response => (this.products = response.data))
-
+    methods: {
+        // Get all categories
+        fetchAllCategories() {
             axios
-                .get('libraries/controllers/getDataCategories.php')
-                .then(response => (this.categories = response.data))
-
-            axios
-                .get('libraries/controllers/getDataBrands.php')
-                .then(response => (this.brands = response.data))
+                .post('./admin/action.php', {
+                    action: 'fetchallcategories'
+                }).then(response => (this.allCategories = response.data))
+        },
+    },
+    created() {
+        // Call function fetchAllCategories
+        this.fetchAllCategories();
     },
     router,
     components: { Home, Contact, Cart, ProductSheet }
