@@ -218,8 +218,8 @@ const Cart = {
                 </thead>
                 
                 <tbody>
-                    <tr v-for="(product, index) in allProductsInCart" v-bind:key="product.cart_id" class="table-light text-center">
-                        <td class="align-middle" scope="row"><button @click="deleteProduct(product.cart_id, index)" type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
+                    <tr v-for="product in allProductsInCart" v-bind:key="product.cart_id" class="table-light text-center">
+                        <td class="align-middle" scope="row"><button @click="deleteProduct(product, product.cart_id)" type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
                         <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
                         <td class="align-middle text-left">{{ product.product_name }}</td>
                         <td class="align-middle">
@@ -270,18 +270,21 @@ const Cart = {
         updateQuantity(product, updateType, cartId, productQuantity) {
             for (let i = 0; i < this.allProductsInCart.length; i++) {
                 if (this.allProductsInCart[i].cart_id === product.cart_id) {
+                    // Decrement
                     if (updateType === 'substract') {
                         if (this.allProductsInCart[i].product_quantity !== 1) {
                             this.allProductsInCart[i].product_quantity--;
                         }
+                    // Increment
                     } else if (updateType === 'add'){
                         this.allProductsInCart[i].product_quantity++;
+                    // V-model input changed
                     } else { 
                         axios
                             .post('./admin/action.php', {
                                 action: 'updatequantity',
-                                productQuantity: productQuantity,
-                                cartId: cartId
+                                cartId: cartId,
+                                productQuantity: productQuantity
                             }).then(response => (console.log(response)))
                             
                     break;
@@ -290,8 +293,8 @@ const Cart = {
                     axios
                         .post('./admin/action.php', {
                             action: 'updatequantity',
-                            productQuantity: this.allProductsInCart[i].product_quantity,
-                            cartId: cartId
+                            cartId: cartId,
+                            productQuantity: this.allProductsInCart[i].product_quantity
                         }).then(response => (console.log(response)))
                     
                     break;
@@ -299,13 +302,13 @@ const Cart = {
 
             }
         },
-        deleteProduct(cartId, index) {
+        deleteProduct(product, cartId) {
+            this.allProductsInCart.splice(this.allProductsInCart.indexOf(product), 1);
             axios
             .post('./admin/action.php', {
                 action: 'deleteproduct',
                 cartId: cartId
             }).then(response => (console.log(response)))
-            this.allProductsInCart.splice(this.allProductsInCart[index], 1);
         }
     },
     computed: {
