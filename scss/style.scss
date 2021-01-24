@@ -135,10 +135,13 @@ p {
     position:absolute;
     top: 32%;
     left: 50%;
+    width: 220px;
     transform: translate(-50%, -32%);
     color: #F0AD4E;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
     padding: 10px 20px;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
 .card-title {
@@ -163,7 +166,12 @@ p {
     border-radius: 10px !important;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     font-family: Arial, Helvetica, sans-serif;
+    transition: all .1s;
 
+}
+
+.btn-card:hover {
+    transform: scale(1.1);
 }
 
 
@@ -189,6 +197,17 @@ p {
     img {
         width: 100%;
     }
+}
+
+.btn-quantity {
+    font-size: .6rem !important;
+    margin: {
+        left: 5px;
+        right: 5px;
+    }
+    padding: 1px 8px;
+    border-radius: 100%;
+    border: 1px solid rgba(26, 26, 26, .5);
 }
 
 .total-group {

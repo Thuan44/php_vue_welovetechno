@@ -104,8 +104,8 @@ const Home = {
                             <div class="col-4">
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
-                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
-                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger">OUT OF STOCK !</p>
+                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost sold out !</p>
+                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
                                     <div class="card-body d-flex flex-column -justify-content-center">
                                         <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
@@ -217,12 +217,16 @@ const Cart = {
                 </thead>
                 <tbody>
                     <tr v-for="product in allProductsInCart" class="table-light text-center">
-                        <th scope="row"><button type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></th>
+                        <td class="align-middle" scope="row"><button type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
                         <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
                         <td class="align-middle text-left">{{ product.product_name }}</td>
-                        <td class="align-middle">{{ product.product_quantity }}</td>
-                        <td class="align-middle">\${{ product.product_price }}</td>
-                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">$30.00</td>
+                        <td class="align-middle">
+                            <button @click="incrementQuantity(product.product_quantity, product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
+                            {{ product.product_quantity }}
+                            <button type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
+                        </td>
+                        <td class="align-middle">{{ product.product_price }}</td>
+                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">\${{ product.product_price * product.product_quantity }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -231,10 +235,10 @@ const Cart = {
                 <div class="total-group d-flex flex-column">
                     <div class="d-flex align-items-center total-to-pay form-group mb-2 shadow-sm">
                         <label for="total-to-pay" class="mb-0 total-label bg-primary text-white form-control text-uppercase text-center">Total to Pay</label>
-                        <input id="total-to-pay" class="text-right total-input form-control bg-light" value="$100.00"></input>
+                        <input id="total-to-pay" class="text-right total-input form-control bg-light" :value="totalToPay" />
                     </div>
                     <div class="btn-checkout shadow-sm">
-                        <button type="submit" class="btn btn-success form-control">Proceed to Checkout <span class="pl-1"><i class="fas fa-credit-card"></i></span></button>
+                        <a href="#" class="btn btn-success form-control">Proceed to Checkout <span class="pl-1"><i class="fas fa-credit-card"></i></span></a>
                     </div>
                 </div>
             </form>
@@ -260,6 +264,27 @@ const Cart = {
                     action: 'fetchallproductsincart'
                 }).then(response => (this.allProductsInCart = response.data))
         },
+        incrementQuantity(productQuantity, cartId) {
+            axios
+                .post('./admin/action.php', {
+                    action: 'incrementquantity',
+                    productQuantity: productQuantity,
+                    cartId: cartId
+                }).then(response => (console.log(response)))
+                .then(console.log(cartId))
+                .then(console.log(productQuantity))
+        }       
+    },
+    computed: {
+        totalToPay() {
+            let total = 0;
+            for (let product of this.allProductsInCart) {
+                total += (product.product_price * product.product_quantity);
+                total = total.toFixed(2); // Returns a string
+                total = Number(total);
+            }
+            return total;
+        }
     },
     created() {
         // Call function fetchAllCategories

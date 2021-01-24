@@ -62,7 +62,7 @@ if($received_data->action == 'addsingleproducttocart')
         ':productId' => $received_data->productId
     );
 
-    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 2)";
     $result = $connect->prepare($query);
     $result->execute($data);
 
@@ -75,7 +75,7 @@ if($received_data->action == 'addsingleproducttocart')
 
 
 # CART ===============
-// Get all products in cart
+// Display all products in cart
 if($received_data->action == 'fetchallproductsincart')
 {
     $query = "SELECT * FROM cart
@@ -90,6 +90,20 @@ if($received_data->action == 'fetchallproductsincart')
     echo json_encode($data);
 }
 
+// Increment quantity
+if($received_data->action == 'incrementquantity')
+{
+    $data = array(
+        ':productQuantity' => $received_data->productQuantity,
+        ':cartId' => $received_data->cartId
+    );
+
+    $query = "UPDATE cart
+            SET product_quantity = :productQuantity + 1
+            WHERE cart_id = :cartId";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+}
 
 ?>
 
