@@ -62,7 +62,7 @@ if($received_data->action == 'addsingleproducttocart')
         ':productId' => $received_data->productId
     );
 
-    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 2)";
     $result = $connect->prepare($query);
     $result->execute($data);
 
@@ -73,4 +73,50 @@ if($received_data->action == 'addsingleproducttocart')
     echo json_encode($output);
 }
 
+
+# CART ===============
+// Display all products in cart
+if($received_data->action == 'fetchallproductsincart')
+{
+    $query = "SELECT * FROM cart
+            INNER JOIN products ON cart.product_id = products.product_id
+            INNER JOIN images ON cart.product_id = images.product_id";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data[] = $row;
+    }
+    echo json_encode($data);
+}
+
+// Change quantity
+if($received_data->action == 'updatequantity')
+{
+    $data = array(
+        ':productQuantity' => $received_data->productQuantity,
+        ':cartId' => $received_data->cartId
+    );
+
+    $query = "UPDATE cart
+            SET product_quantity = :productQuantity
+            WHERE cart_id = :cartId";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+}
+
+// Delete product from cart
+if($received_data->action == 'deleteproduct')
+{
+    $data = array(
+        ':cartId' => $received_data->cartId
+    );
+
+    $query = "DELETE FROM cart WHERE cart_id = :cartId";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+}
+
 ?>
+
+

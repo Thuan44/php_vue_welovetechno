@@ -134,11 +134,14 @@ p {
   position: absolute;
   top: 32%;
   left: 50%;
+  width: 220px;
   -webkit-transform: translate(-50%, -32%);
           transform: translate(-50%, -32%);
   color: #F0AD4E;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
   padding: 10px 20px;
+  font-family: Arial, Helvetica, sans-serif !important;
 }
 
 .card-title {
@@ -165,6 +168,13 @@ p {
   -webkit-box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
           box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-transition: all .1s;
+  transition: all .1s;
+}
+
+.btn-card:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .cart-table {
@@ -173,6 +183,42 @@ p {
 
 .btn-cart-delete {
   padding: 5px 10px !important;
+  font-size: 1.2rem !important;
+  -webkit-transition: all .1s;
+  transition: all .1s;
+}
+
+.btn-cart-delete:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
+.cart-img {
+  width: 50px;
+}
+
+.cart-img img {
+  width: 100%;
+}
+
+.btn-quantity {
+  font-size: .6rem !important;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 1px 8px;
+  border-radius: 100%;
+  border: 1px solid rgba(26, 26, 26, 0.5);
+}
+
+.input-quantity {
+  width: 30px;
+  -webkit-appearance: none;
+  text-align: center;
+  border: 1px solid rgba(26, 26, 26, 0.5);
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .total-group {

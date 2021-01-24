@@ -78,19 +78,19 @@ const Home = {
 
                 <div v-if="selectedBrands.length > 0">
                     <div class="row justify-content-center cards-container">
-                        <div v-for="product in filteredProducts" class="mt-4">
+                        <div v-for="product in filteredProducts" v-bind:key="product.product_id" class="mt-4">
                             <div class="col-4">
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
-                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
-                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center" style="color: red">OUT OF STOCK !</p>
+                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost Sold Out !</p>
+                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
                                     <div class="card-body d-flex flex-column -justify-content-center">
                                         <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -100,19 +100,19 @@ const Home = {
                 </div>
                 <div v-else>
                     <div class="row justify-content-center cards-container">
-                        <div v-for="product in allProducts" class="mt-4">
+                        <div v-for="product in allProducts" v-bind:key="product.product_id" class="mt-4">
                             <div class="col-4">
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
-                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center">Almost Sold Out !</p>
-                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger">OUT OF STOCK !</p>
+                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost sold out !</p>
+                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
                                     <div class="card-body d-flex flex-column -justify-content-center">
                                         <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link :to="{name: 'ProductSheet', params: { id: product.product_id }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -206,6 +206,7 @@ const Cart = {
             <div class="divider"></div>
 
             <table class="table table-hover cart-table shadow-sm">
+
                 <thead>
                     <tr class="text-white text-center font-weight-bold" style="background-color: #1A1A1A !important">
                         <th scope="col"></th>
@@ -215,26 +216,32 @@ const Cart = {
                         <th scope="col" class="text-right">Total Price</th>
                     </tr>
                 </thead>
+                
                 <tbody>
-                    <tr class="table-light text-center">
-                        <th scope="row"><button type="submit" class="btn btn-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></th>
-                        <td class="align-middle">Product Image</td>
-                        <td class="align-middle">Product Name</td>
-                        <td class="align-middle">Column content</td>
-                        <td class="align-middle">$5.00</td>
-                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">$30.00</td>
+                    <tr v-for="product in allProductsInCart" v-bind:key="product.cart_id" class="table-light text-center">
+                        <td class="align-middle" scope="row"><button @click="deleteProduct(product, product.cart_id)" type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
+                        <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
+                        <td class="align-middle text-left">{{ product.product_name }}</td>
+                        <td class="align-middle">
+                            <button @click="updateQuantity(product, 'substract', product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
+                            <input @change="updateQuantity(product, 'manualUpdate', product.cart_id, product.product_quantity)" type="number" min="1" step="1" v-model.number="product.product_quantity" class="input-quantity">
+                            <button @click="updateQuantity(product, 'add', product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
+                        </td>
+                        <td class="align-middle">\${{ product.product_price }}</td>
+                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">\${{ product.product_price * product.product_quantity }}</td>
                     </tr>
                 </tbody>
+
             </table>
 
             <form action="#">
                 <div class="total-group d-flex flex-column">
                     <div class="d-flex align-items-center total-to-pay form-group mb-2 shadow-sm">
                         <label for="total-to-pay" class="mb-0 total-label bg-primary text-white form-control text-uppercase text-center">Total to Pay</label>
-                        <input id="total-to-pay" class="text-right total-input form-control bg-light" value="$100.00"></input>
+                        <input id="total-to-pay" class="text-right total-input form-control bg-light" :value="totalToPay" />
                     </div>
                     <div class="btn-checkout shadow-sm">
-                        <button type="submit" class="btn btn-success form-control">Proceed to Checkout <span class="pl-1"><i class="fas fa-credit-card"></i></span></button>
+                        <a href="#" class="btn btn-success form-control">Proceed to Checkout <span class="pl-1"><i class="fas fa-credit-card"></i></span></a>
                     </div>
                 </div>
             </form>
@@ -243,7 +250,82 @@ const Cart = {
 
     </div>
     `,
-    name: 'Cart'
+    name: 'Cart',
+    data: () => {
+        return {
+            allProductsInCart: '',
+        }
+    },
+    methods: {
+        getImgUrl(picture) {
+            return "./assets/" + picture;
+        },
+        // Get all products in cart
+        fetchAllProductsInCart() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchallproductsincart'
+                }).then(response => (this.allProductsInCart = response.data))
+        },
+        updateQuantity(product, updateType, cartId, productQuantity) {
+            for (let i = 0; i < this.allProductsInCart.length; i++) {
+                if (this.allProductsInCart[i].cart_id === product.cart_id) {
+                    // Decrement
+                    if (updateType === 'substract') {
+                        if (this.allProductsInCart[i].product_quantity !== 1) {
+                            this.allProductsInCart[i].product_quantity--;
+                        }
+                    // Increment
+                    } else if (updateType === 'add'){
+                        this.allProductsInCart[i].product_quantity++;
+                    // V-model input changed
+                    } else { 
+                        axios
+                            .post('./admin/action.php', {
+                                action: 'updatequantity',
+                                cartId: cartId,
+                                productQuantity: productQuantity
+                            }).then(response => (console.log(response)))
+                            
+                    break;
+                    }
+
+                    axios
+                        .post('./admin/action.php', {
+                            action: 'updatequantity',
+                            cartId: cartId,
+                            productQuantity: this.allProductsInCart[i].product_quantity
+                        }).then(response => (console.log(response)))
+                    
+                    break;
+                }
+
+            }
+        },
+        deleteProduct(product, cartId) {
+            this.allProductsInCart.splice(this.allProductsInCart.indexOf(product), 1);
+            axios
+            .post('./admin/action.php', {
+                action: 'deleteproduct',
+                cartId: cartId
+            }).then(response => (console.log(response)))
+        }
+    },
+    computed: {
+        totalToPay() {
+            let total = 0;
+            for (let product of this.allProductsInCart) {
+                total += (product.product_price * product.product_quantity);
+                total = total.toFixed(2); // Returns a string
+                total = Number(total);
+            }
+            return total;
+        }
+    },
+    created() {
+        // Call function fetchAllCategories
+        this.fetchAllProductsInCart();
+    },
 }
 
 
