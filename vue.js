@@ -206,6 +206,7 @@ const Cart = {
             <div class="divider"></div>
 
             <table class="table table-hover cart-table shadow-sm">
+
                 <thead>
                     <tr class="text-white text-center font-weight-bold" style="background-color: #1A1A1A !important">
                         <th scope="col"></th>
@@ -215,20 +216,22 @@ const Cart = {
                         <th scope="col" class="text-right">Total Price</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     <tr v-for="product in allProductsInCart" class="table-light text-center">
                         <td class="align-middle" scope="row"><button type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
                         <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
                         <td class="align-middle text-left">{{ product.product_name }}</td>
                         <td class="align-middle">
-                            <button @click="incrementQuantity(product.product_quantity, product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
-                            {{ product.product_quantity }}
-                            <button type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
+                            <button @click="product.product_quantity++; changeQuantity(product.product_quantity, product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
+                            <input type="number" v-model.number="product.product_quantity" class="input-quantity">
+                            <button @click="if (product.product_quantity >= 2) { product.product_quantity-- }; changeQuantity(product.product_quantity, product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
                         </td>
                         <td class="align-middle">{{ product.product_price }}</td>
                         <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">\${{ product.product_price * product.product_quantity }}</td>
                     </tr>
                 </tbody>
+
             </table>
 
             <form action="#">
@@ -264,16 +267,16 @@ const Cart = {
                     action: 'fetchallproductsincart'
                 }).then(response => (this.allProductsInCart = response.data))
         },
-        incrementQuantity(productQuantity, cartId) {
-            axios
-                .post('./admin/action.php', {
-                    action: 'incrementquantity',
-                    productQuantity: productQuantity,
-                    cartId: cartId
-                }).then(response => (console.log(response)))
-                .then(console.log(cartId))
-                .then(console.log(productQuantity))
-        }       
+        changeQuantity(productQuantity, cartId) {
+            if (productQuantity >= 1) {
+                axios
+                    .post('./admin/action.php', {
+                        action: 'changequantity',
+                        productQuantity: productQuantity,
+                        cartId: cartId
+                    }).then(response => (console.log(response)))
+                }
+        }
     },
     computed: {
         totalToPay() {

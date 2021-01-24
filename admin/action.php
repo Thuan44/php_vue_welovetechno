@@ -90,8 +90,8 @@ if($received_data->action == 'fetchallproductsincart')
     echo json_encode($data);
 }
 
-// Increment quantity
-if($received_data->action == 'incrementquantity')
+// Change quantity
+if($received_data->action == 'changequantity')
 {
     $data = array(
         ':productQuantity' => $received_data->productQuantity,
@@ -99,7 +99,7 @@ if($received_data->action == 'incrementquantity')
     );
 
     $query = "UPDATE cart
-            SET product_quantity = :productQuantity + 1
+            SET product_quantity = :productQuantity
             WHERE cart_id = :cartId";
     $result = $connect->prepare($query);
     $result->execute($data);
