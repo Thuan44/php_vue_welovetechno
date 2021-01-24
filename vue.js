@@ -78,7 +78,7 @@ const Home = {
 
                 <div v-if="selectedBrands.length > 0">
                     <div class="row justify-content-center cards-container">
-                        <div v-for="product in filteredProducts" class="mt-4">
+                        <div v-for="product in filteredProducts" v-bind:key="product.product_id" class="mt-4">
                             <div class="col-4">
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
@@ -100,7 +100,7 @@ const Home = {
                 </div>
                 <div v-else>
                     <div class="row justify-content-center cards-container">
-                        <div v-for="product in allProducts" class="mt-4">
+                        <div v-for="product in allProducts" v-bind:key="product.product_id" class="mt-4">
                             <div class="col-4">
                                 <div class="card product-card shadow-sm p-3" style="width: 20rem;">
                                     <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
@@ -218,16 +218,16 @@ const Cart = {
                 </thead>
                 
                 <tbody>
-                    <tr v-for="product in allProductsInCart" class="table-light text-center">
-                        <td class="align-middle" scope="row"><button type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
+                    <tr v-for="(product, index) in allProductsInCart" v-bind:key="product.cart_id" class="table-light text-center">
+                        <td class="align-middle" scope="row"><button @click="deleteProduct(product.cart_id, index)" type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
                         <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
                         <td class="align-middle text-left">{{ product.product_name }}</td>
                         <td class="align-middle">
-                            <button @click="product.product_quantity++; changeQuantity(product.product_quantity, product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
-                            <input type="number" v-model.number="product.product_quantity" class="input-quantity">
-                            <button @click="if (product.product_quantity >= 2) { product.product_quantity-- }; changeQuantity(product.product_quantity, product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
+                            <button @click="updateQuantity(product, 'substract', product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
+                            <input @change="updateQuantity(product, 'manualUpdate', product.cart_id, product.product_quantity)" type="number" min="1" step="1" v-model.number="product.product_quantity" class="input-quantity">
+                            <button @click="updateQuantity(product, 'add', product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
                         </td>
-                        <td class="align-middle">{{ product.product_price }}</td>
+                        <td class="align-middle">\${{ product.product_price }}</td>
                         <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">\${{ product.product_price * product.product_quantity }}</td>
                     </tr>
                 </tbody>
@@ -267,15 +267,45 @@ const Cart = {
                     action: 'fetchallproductsincart'
                 }).then(response => (this.allProductsInCart = response.data))
         },
-        changeQuantity(productQuantity, cartId) {
-            if (productQuantity >= 1) {
-                axios
-                    .post('./admin/action.php', {
-                        action: 'changequantity',
-                        productQuantity: productQuantity,
-                        cartId: cartId
-                    }).then(response => (console.log(response)))
+        updateQuantity(product, updateType, cartId, productQuantity) {
+            for (let i = 0; i < this.allProductsInCart.length; i++) {
+                if (this.allProductsInCart[i].cart_id === product.cart_id) {
+                    if (updateType === 'substract') {
+                        if (this.allProductsInCart[i].product_quantity !== 1) {
+                            this.allProductsInCart[i].product_quantity--;
+                        }
+                    } else if (updateType === 'add'){
+                        this.allProductsInCart[i].product_quantity++;
+                    } else { 
+                        axios
+                            .post('./admin/action.php', {
+                                action: 'updatequantity',
+                                productQuantity: productQuantity,
+                                cartId: cartId
+                            }).then(response => (console.log(response)))
+                            
+                    break;
+                    }
+
+                    axios
+                        .post('./admin/action.php', {
+                            action: 'updatequantity',
+                            productQuantity: this.allProductsInCart[i].product_quantity,
+                            cartId: cartId
+                        }).then(response => (console.log(response)))
+                    
+                    break;
                 }
+
+            }
+        },
+        deleteProduct(cartId, index) {
+            axios
+            .post('./admin/action.php', {
+                action: 'deleteproduct',
+                cartId: cartId
+            }).then(response => (console.log(response)))
+            this.allProductsInCart.splice(this.allProductsInCart[index], 1);
         }
     },
     computed: {

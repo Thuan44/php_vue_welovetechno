@@ -91,7 +91,7 @@ if($received_data->action == 'fetchallproductsincart')
 }
 
 // Change quantity
-if($received_data->action == 'changequantity')
+if($received_data->action == 'updatequantity')
 {
     $data = array(
         ':productQuantity' => $received_data->productQuantity,
@@ -101,6 +101,18 @@ if($received_data->action == 'changequantity')
     $query = "UPDATE cart
             SET product_quantity = :productQuantity
             WHERE cart_id = :cartId";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+}
+
+// Delete product from cart
+if($received_data->action == 'deleteproduct')
+{
+    $data = array(
+        ':cartId' => $received_data->cartId
+    );
+
+    $query = "DELETE FROM cart WHERE cart_id = :cartId";
     $result = $connect->prepare($query);
     $result->execute($data);
 }
