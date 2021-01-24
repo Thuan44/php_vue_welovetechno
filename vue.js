@@ -186,12 +186,60 @@ const Contact = {
     template: `
     <div>
 
-        <h1>Contact</h1>
+        <div class="container page-container">
 
-        <p>Here is my para</p>
+            <h1 class="mt-5 text-center page-title" style="font-family: 'Fjalla One', sans-serif;">Contact</h1><p class="text-center" style="color: #777">Let's keep in touch !</p>
+            <div class="divider"></div>
+
+        <div class="form-container shadow-sm rounded bg-white py-4 px-5" style="max-width: 600px; margin: 0 auto">
+            <form>
+                <fieldset>
+                    <legend class="text-center text-primary form-envelope m-0"><i class="fas fa-envelope"></i></legend>
+                <fieldset class="form-group d-flex justify-content-center my-3">
+                    <div class="form-check mr-5">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            Say Hi
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+                            Get assisted
+                        </label>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="Enter your first name">
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Enter your last name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="object">Object</label>
+                    <input type="text" class="form-control" id="object" placeholder="Enter the object of your message">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your message</label>
+                    <textarea class="form-control" id="message" rows="3"></textarea>
+                </div>
+                <div style="text-align: center">
+                    <button type="submit" class="btn btn-primary btn-submit-contact rounded shadow-sm mt-2"><i class="fas fa-paper-plane"></i></button>
+                </fieldset>
+                </div>
+            </form>
+        </div>
+
     </div>
     `,
-    name: 'Contact'
+    name: 'Contact',
 }
 
 
@@ -200,9 +248,10 @@ const Cart = {
     template: `
     <div>
 
-        <div class="container">
+    
+        <div class="container page-container">
 
-            <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your articles</p>
+            <h1 class="mt-5 text-center cart-title" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your articles</p>
             <div class="divider"></div>
 
             <table class="table table-hover cart-table shadow-sm">
@@ -267,27 +316,27 @@ const Cart = {
                     action: 'fetchallproductsincart'
                 }).then(response => (this.allProductsInCart = response.data))
         },
-        updateQuantity(product, updateType, cartId, productQuantity) {
+        updateQuantity(product, updateType, cartId, productQuantity) {
             for (let i = 0; i < this.allProductsInCart.length; i++) {
-                if (this.allProductsInCart[i].cart_id === product.cart_id) {
+                if (this.allProductsInCart[i].cart_id === product.cart_id) {
                     // Decrement
                     if (updateType === 'substract') {
-                        if (this.allProductsInCart[i].product_quantity !== 1) {
+                        if (this.allProductsInCart[i].product_quantity !== 1) {
                             this.allProductsInCart[i].product_quantity--;
                         }
-                    // Increment
-                    } else if (updateType === 'add'){
+                        // Increment
+                    } else if (updateType === 'add') {
                         this.allProductsInCart[i].product_quantity++;
-                    // V-model input changed
-                    } else { 
+                        // V-model input changed
+                    } else {
                         axios
                             .post('./admin/action.php', {
                                 action: 'updatequantity',
                                 cartId: cartId,
                                 productQuantity: productQuantity
                             }).then(response => (console.log(response)))
-                            
-                    break;
+
+                        break;
                     }
 
                     axios
@@ -296,23 +345,23 @@ const Cart = {
                             cartId: cartId,
                             productQuantity: this.allProductsInCart[i].product_quantity
                         }).then(response => (console.log(response)))
-                    
+
                     break;
                 }
 
             }
         },
-        deleteProduct(product, cartId) {
+        deleteProduct(product, cartId) {
             this.allProductsInCart.splice(this.allProductsInCart.indexOf(product), 1);
             axios
-            .post('./admin/action.php', {
-                action: 'deleteproduct',
-                cartId: cartId
-            }).then(response => (console.log(response)))
+                .post('./admin/action.php', {
+                    action: 'deleteproduct',
+                    cartId: cartId
+                }).then(response => (console.log(response)))
         }
     },
     computed: {
-        totalToPay() {
+        totalToPay() {
             let total = 0;
             for (let product of this.allProductsInCart) {
                 total += (product.product_price * product.product_quantity);

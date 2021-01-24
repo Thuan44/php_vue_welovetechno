@@ -244,6 +244,20 @@ input.form-control {
   border: 1px solid rgba(26, 26, 26, 0.5) !important;
 }
 
+.btn-checkout a {
+  padding-bottom: 35px !important;
+}
+
+.form-envelope {
+  font-size: 2rem !important;
+}
+
+.btn-submit-contact {
+  font-size: 1.2rem !important;
+  width: 70px;
+  margin: 0 auto;
+}
+
 @media screen and (max-width: 992px) {
   .search-bar {
     position: absolute;
@@ -268,6 +282,9 @@ input.form-control {
   }
   #carouselExampleIndicators {
     margin-top: 85px;
+  }
+  .page-container {
+    padding-top: 90px;
   }
 }
 

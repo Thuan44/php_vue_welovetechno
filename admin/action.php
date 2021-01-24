@@ -62,7 +62,7 @@ if($received_data->action == 'addsingleproducttocart')
         ':productId' => $received_data->productId
     );
 
-    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 2)";
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
     $result = $connect->prepare($query);
     $result->execute($data);
 
