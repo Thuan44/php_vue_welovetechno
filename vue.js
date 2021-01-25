@@ -235,18 +235,16 @@ const ProductSheet = {
 
                 </div> <!-- row.// -->
 
-                <div class="mx-5 mt-4 w-100">
-                    <h4 class="float-left mt-5" style="font-family: 'Fjalla One', sans-serif;">Customer reviews</h4>
-                </div>
+                <h4 class="text-left mt-5 ml-5" style="font-family: 'Fjalla One', sans-serif;">Customer reviews</h4>
 
-                <div class="card mx-5 my-3 w-100 rounded shadow-sm">
+                <div class="card mx-5 my-3 rounded shadow-sm">
                     <h5 class="card-header">Leave a Comment:</h5>
                     <div class="card-body">
-                        <form action="" method="POST">
+                        <form action="" method="POST" v-on:submit.prevent="addreview">
                             <div class="form-group">
                                 <textarea class="form-control" name="comment_content" rows="3" v-model="reviewContent"></textarea>
                             </div>
-                            <button @click="addReview(product.product_id)" type="button" name="add-comment" class="btn btn-primary btn-sm rounded float-right">Post</button>
+                            <button @click="addReview(product.product_id)" type="submit" name="add-comment" class="btn btn-primary btn-sm rounded float-right">Post</button>
                         </form>
                     </div>
                 </div>
