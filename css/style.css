@@ -248,6 +248,44 @@ input.form-control {
   padding-bottom: 35px !important;
 }
 
+.product-extra-img {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.product-extra-img img {
+  width: 100%;
+}
+
+.product-img img {
+  width: 100%;
+}
+
+.product-title {
+  font-family: 'Tajawal', sans-serif;
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.product-availabilty {
+  display: block;
+}
+
+.product-divider {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(50, 50, 50, 0.2);
+  margin: 20px 0;
+}
+
+.contact-us {
+  background-color: rgba(50, 50, 50, 0.5) !important;
+}
+
+.single-product-price {
+  font-size: 1.1rem !important;
+}
+
 .form-envelope {
   font-size: 2rem !important;
 }

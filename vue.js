@@ -89,7 +89,7 @@ const Home = {
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
-                                            <router-link to="/product-sheet" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
                                             <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@ const Home = {
                                         <p class="card-text mb-3">{{ product.brand_name }}</p>
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
-                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
                                             <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
                                         </div>
                                     </div>
@@ -176,8 +176,142 @@ const Home = {
 
 // Product Sheet
 const ProductSheet = {
-    template: '<h1>Product Sheet</h1>',
-    name: 'ProductSheet'
+    template: `
+        <div>
+
+            <div class="container product-sheet-container mt-5 py-5 px-4 bg-white shadow-sm rounded">
+
+                <div class="row justify-content-center">
+
+                    <div class="col-md-1 col-lg-1 px-0 align-self-center" align="center">
+                        <div class="product-extra-img mb-2 border">
+                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                        </div>
+                        <div class="product-extra-img mb-2 border">
+                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                        </div>
+                        <div class="product-extra-img mb-2 border">
+                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                        </div>
+                        <div class="product-extra-img mb-2 border">
+                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                        </div>
+                    </div> <!-- col.// -->
+
+                    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 pr-4 align-self-center">
+                        <div class="product-img">
+                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                            <p class="font-italic text-center" style="color: rgba(50, 50, 50, .4)">Hover the thumbnails to see more images</p>
+                        </div>
+                    </div> <!-- col.// -->
+
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 px-4">
+                        <h4 class="product-title" >{{ product.product_name }}</h4>
+                        <div class="badge badge-pill badge-primary pb-1">{{ product.brand_name }}</div>
+                        <small class="text-uppercase product-availability d-block">Availability: 
+                            <span v-if="product.product_stock < 10" class="text-danger"><u>Limited stock</u></span>
+                            <span v-else class="text-success"><u>In stock</u></span>
+                        </small>
+                        <div class="single-product-price text-danger">\${{ product.product_price }}</div>
+                        <div class="product-divider"></div>
+                        <div class="d-flex flex-column justify-content-between h-75 group-description-price">
+                            <div class="product-description">
+                                <h5 class="text-lowercase"><span class="text-capitalize">About</span> this product</h5>
+                                <p class="text-justify">{{ product.product_description }}</p>
+                                <div class="mx-4 mt-3 p-1 text-center contact-us">
+                                    <small class="text-white">You have a question about this product ? <router-link class="text-white" to="/contact"><u>Let us know here.</u></router-link></small>
+                                </div>
+                                <small class="mt-3 float-right"><a href="#">See order settings \> </a></small>
+                            </div>
+                            <div>
+                                <div class="product-divider"></div>
+                                <div class="product-validation float-right">
+                                    <button @click="addToCart(product.product_id)" type="submit" class="btn btn-outline-success btn-sm rounded shadow-sm">Add  to cart</button></td>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- col.// -->
+
+                </div> <!-- row.// -->
+
+                <div class="mx-5 mt-4 w-100">
+                    <h4 class="float-left mt-5" style="font-family: 'Fjalla One', sans-serif;">Customer reviews</h4>
+                </div>
+
+                <div class="card mx-5 my-3 w-100 rounded shadow-sm">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            <div class="form-group">
+                                <textarea class="form-control" name="comment_content" rows="3" v-model="reviewContent"></textarea>
+                            </div>
+                            <button @click="addReview(product.product_id)" type="button" name="add-comment" class="btn btn-primary btn-sm rounded float-right">Post</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mx-5 my-3 rounded shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2 d-flex flex-column justify-content-around align-items-center">
+                                <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid w-75"/>
+                                <p class="text-center"><small class="text-secondary">15 Minutes Ago</small></p>
+                            </div>
+                            <div class="col-md-10">
+                                <p>
+                                    <h5 class="float-left text-capitalize">Maniruzzaman Akash</h5>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+
+                                </p>
+                                <div class="clearfix"></div>
+                                <p class="text-justify">Lorem Ipsum is simply dummy text of the pr make  but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                <p>
+                                    <a class="float-right btn btn-primary ml-2 btn-sm rounded"> <i class="fa fa-reply"></i> Reply</a>
+                                    <a class="float-right btn text-white btn-danger btn-sm rounded"> <i class="fa fa-heart"></i> Like</a>
+                                </p>
+                            </div>  <!-- col.// -->
+                        </div> <!-- row.// -->
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+
+            </div> <!-- container.// -->
+            
+        </div>
+    `,
+    name: 'ProductSheet',
+    data() {
+        return {
+            selectedId: this.$route.params.id,
+            product: this.$route.params.product,
+            reviewContent: '',
+        }
+    },
+    methods: {
+        getImgUrl(picture) {
+            return "./assets/" + picture;
+        },
+        addToCart(productId) {
+            axios
+                .post('./admin/action.php', {
+                    action: 'addsingleproducttocart',
+                    productId: productId
+                })
+                .then(response => alert(response.data.message))
+        },
+        addReview(productId) {
+            axios
+                .post('./admin/action.php', {
+                    action: 'addreview',
+                    productId: productId,
+                    reviewContent: this.reviewContent
+                })
+                .then(response => alert(response.data.message))
+        }
+    }
 }
 
 

@@ -1,5 +1,4 @@
 <?php 
-
 session_start();
 
 $connect = new PDO("mysql:host=localhost;dbname=welovetechno", "root", "root");
@@ -8,7 +7,7 @@ $data = array();
 
 @$userId = $_SESSION['user_id'];
 
-# FETCH TABLES
+# FETCH TABLES ====================================
 // Get all products joined with brands and images
 if($received_data->action == 'fetchallproducts')
 {
@@ -52,7 +51,30 @@ if($received_data->action == 'fetchallbrands')
 }
 
 
-# ADD TO CART ==================
+
+# REVIEWS ====================================
+if($received_data->action == 'addreview')
+{
+    global $userId;
+
+    $data = array(
+        ':productId' => $received_data->productId,
+        ':reviewContent' => $received_data->reviewContent
+    );
+
+    $query = "INSERT INTO reviews (product_id, user_id, review_content) VALUES (:productId, $userId, :reviewContent)";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+
+    $output = array(
+        'message' => 'Review posted !'
+    );
+
+    echo json_encode($output);
+}
+
+
+# ADD TO CART ====================================
 // Add single product
 if($received_data->action == 'addsingleproducttocart')
 {
@@ -74,13 +96,16 @@ if($received_data->action == 'addsingleproducttocart')
 }
 
 
-# CART ===============
+# CART =================================
 // Display all products in cart
 if($received_data->action == 'fetchallproductsincart')
 {
+    global $userId;
+
     $query = "SELECT * FROM cart
             INNER JOIN products ON cart.product_id = products.product_id
-            INNER JOIN images ON cart.product_id = images.product_id";
+            INNER JOIN images ON cart.product_id = images.product_id
+            WHERE cart.user_id = $userId";
     $result = $connect->prepare($query);
     $result->execute();
     while($row = $result->fetch(PDO::FETCH_ASSOC))

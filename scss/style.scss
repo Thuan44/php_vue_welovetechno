@@ -87,7 +87,7 @@ p {
 }
 
 
-// BO - HOMEPAGE
+// BO - HOMEPAGE ==============
 .back-office-card{
     transition: all .1s;
     
@@ -175,7 +175,7 @@ p {
 }
 
 
-// CART
+// CART ================
 .cart-table {
     border: 1px solid rgba(26, 26, 26, .5) !important;
 
@@ -248,6 +248,49 @@ input.form-control {
         padding-bottom: 35px !important;  
     }
 } 
+
+
+
+// PRODUCT SHEET ============
+.product-extra-img {
+    width: 50px !important;
+    height: 50px !important;
+
+    img {
+        width: 100%;
+    }
+}
+
+.product-img {
+    img {
+        width: 100%;
+    }
+}
+
+.product-title {
+    font-family: 'Tajawal', sans-serif;
+    margin-bottom: 0;
+    display: inline-block;
+}
+
+.product-availabilty {
+    display: block;
+}
+
+.product-divider {
+    height: 1px;
+    width: 100%;
+    background-color: rgba(50, 50, 50, .2);
+    margin: 20px 0;
+}
+
+.contact-us {
+    background-color: rgba(50, 50, 50, .5) !important;
+}
+
+.single-product-price {
+    font-size: 1.1rem !important;
+}
 
 
 
