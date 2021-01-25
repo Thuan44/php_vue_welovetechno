@@ -73,6 +73,23 @@ if($received_data->action == 'addreview')
     echo json_encode($output);
 }
 
+// Get reviews by product id
+if($received_data->action == 'fetchallreviews')
+{
+    $productId = $received_data->productId;
+
+    $query = "SELECT * FROM reviews
+            INNER JOIN users ON reviews.user_id = users.user_id
+            WHERE product_id = $productId";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data[] = $row;
+    }
+    echo json_encode($data);
+}
+
 
 # ADD TO CART ====================================
 // Add single product

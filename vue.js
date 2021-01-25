@@ -183,6 +183,7 @@ const ProductSheet = {
 
                 <div class="row justify-content-center">
 
+                    <!-- PRODUCT IMAGES -->
                     <div class="col-md-1 col-lg-1 px-0 align-self-center" align="center">
                         <div class="product-extra-img mb-2 border">
                             <img :src="getImgUrl(product.img_name)" alt="product-image">
@@ -205,7 +206,7 @@ const ProductSheet = {
                         </div>
                     </div> <!-- col.// -->
 
-
+                    <!-- PRODUCT INFO -->
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 px-4">
                         <h4 class="product-title" >{{ product.product_name }}</h4>
                         <div class="badge badge-pill badge-primary pb-1">{{ product.brand_name }}</div>
@@ -235,21 +236,23 @@ const ProductSheet = {
 
                 </div> <!-- row.// -->
 
+                <!-- CUSTOMER REVIEWS -->
                 <h4 class="text-left mt-5 ml-5" style="font-family: 'Fjalla One', sans-serif;">Customer reviews</h4>
 
+                <!-- ADD REVIEW -->
                 <div class="card mx-5 my-3 rounded shadow-sm">
-                    <h5 class="card-header">Leave a Comment:</h5>
+                    <h5 class="card-header">Leave a review:</h5>
                     <div class="card-body">
                         <form action="" method="POST" v-on:submit.prevent="addreview">
                             <div class="form-group">
-                                <textarea class="form-control" name="comment_content" rows="3" v-model="reviewContent"></textarea>
+                                <textarea class="form-control border" name="comment_content" rows="3" v-model="reviewContent"></textarea>
                             </div>
                             <button @click="addReview(product.product_id)" type="submit" name="add-comment" class="btn btn-primary btn-sm rounded float-right">Post</button>
                         </form>
                     </div>
-                </div>
-
-                <div class="card mx-5 my-3 rounded shadow-sm">
+                </div> <!-- card.// -->
+                
+                <div v-for="review in reviewsByProduct" v-bind:key="review.review_id" class="card mx-5 my-3 rounded shadow-sm">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2 d-flex flex-column justify-content-around align-items-center">
@@ -258,7 +261,7 @@ const ProductSheet = {
                             </div>
                             <div class="col-md-10">
                                 <p>
-                                    <h5 class="float-left text-capitalize">Maniruzzaman Akash</h5>
+                                    <h5 class="float-left text-capitalize">{{ review.user_name }}</h5>
                                     <span class="float-right"><i class="text-warning fa fa-star"></i></span>
                                     <span class="float-right"><i class="text-warning fa fa-star"></i></span>
                                     <span class="float-right"><i class="text-warning fa fa-star"></i></span>
@@ -266,7 +269,7 @@ const ProductSheet = {
 
                                 </p>
                                 <div class="clearfix"></div>
-                                <p class="text-justify">Lorem Ipsum is simply dummy text of the pr make  but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                                <p class="text-justify">{{ review.review_content }}</p>
                                 <p>
                                     <a class="float-right btn btn-primary ml-2 btn-sm rounded"> <i class="fa fa-reply"></i> Reply</a>
                                     <a class="float-right btn text-white btn-danger btn-sm rounded"> <i class="fa fa-heart"></i> Like</a>
@@ -286,6 +289,7 @@ const ProductSheet = {
             selectedId: this.$route.params.id,
             product: this.$route.params.product,
             reviewContent: '',
+            reviewsByProduct: '',
         }
     },
     methods: {
@@ -308,7 +312,19 @@ const ProductSheet = {
                     reviewContent: this.reviewContent
                 })
                 .then(response => alert(response.data.message))
+            this.reviewContent = ''
+        },
+        fetchAllReviews() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchallreviews',
+                    productId: this.selectedId
+                })
+                .then(response => (this.reviewsByProduct = response.data))
         }
+    },
+    created() {
+        this.fetchAllReviews();
     }
 }
 
