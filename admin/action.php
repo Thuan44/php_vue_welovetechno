@@ -80,7 +80,7 @@ if($received_data->action == 'fetchallreviews')
 
     $query = "SELECT * FROM reviews
             INNER JOIN users ON reviews.user_id = users.user_id
-            WHERE product_id = $productId";
+            WHERE product_id = $productId AND is_valid = 1";
     $result = $connect->prepare($query);
     $result->execute();
     while($row = $result->fetch(PDO::FETCH_ASSOC))
@@ -101,7 +101,8 @@ if($received_data->action == 'addsingleproducttocart')
         ':productId' => $received_data->productId
     );
 
-    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) 
+            VALUES (:productId, $userId, 1)";
     $result = $connect->prepare($query);
     $result->execute($data);
 

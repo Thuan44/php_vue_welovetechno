@@ -147,7 +147,7 @@ const Home = {
             axios
                 .post('./admin/action.php', {
                     action: 'addsingleproducttocart',
-                    productId: productId
+                    productId: productId,
                 })
                 .then(response => alert(response.data.message))
         },
@@ -170,7 +170,7 @@ const Home = {
         // Call fetchAll functions
         this.fetchAllProducts();
         this.fetchAllBrands();
-    }
+    },
 }
 
 
@@ -469,7 +469,7 @@ const Cart = {
                 if (this.allProductsInCart[i].cart_id === product.cart_id) {
                     // Decrement
                     if (updateType === 'substract') {
-                        if (this.allProductsInCart[i].product_quantity !== 1) {
+                        if (this.allProductsInCart[i].product_quantity > 1) {
                             this.allProductsInCart[i].product_quantity--;
                         }
                         // Increment

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -294,6 +295,52 @@ input.form-control {
   font-size: 1.2rem !important;
   width: 70px;
   margin: 0 auto;
+}
+
+.product-line:hover  {
+  background-color: #fff !important;
+}
+
+.validation-icon {
+  font-size: 1.2rem;
+}
+
+.toggle-btn {
+  font-size: 1.2rem !important;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  padding: 5px 10px;
+}
+
+.toggle-btn:hover {
+  background-color: #F2F2F2 !important;
+}
+
+footer {
+  width: 100%;
+  margin-top: 200px !important;
+  height: 80px;
+}
+
+.flag-img {
+  width: 30px !important;
+  height: auto !important;
+}
+
+.flag-img img {
+  opacity: .7;
+}
+
+.copyright {
+  opacity: .7;
+}
+
+.social-icon {
+  font-size: 1.3rem;
+  opacity: .7;
 }
 
 @media screen and (max-width: 992px) {

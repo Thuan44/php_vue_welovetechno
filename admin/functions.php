@@ -202,3 +202,51 @@ function getImgName($target_path, $productId) {
     ));
 
 }
+
+
+# REVIEWS ================
+// Get list of reviews by product
+function listReviewsByProduct($productId) {
+    global $connection;
+
+    $query = "SELECT * FROM reviews
+            INNER JOIN users ON reviews.user_id = users.user_id
+            WHERE product_id = $productId";
+    $result = $connection->prepare($query);
+    $result->execute();
+    return $result->fetchAll();
+}
+
+// Invalidate review
+function validateReview($reviewId) {
+    global $connection;
+
+    $query = "UPDATE reviews
+            SET is_valid = 1
+            WHERE review_id = $reviewId";
+
+    $result = $connection->prepare($query);
+    $result->execute();
+}
+
+// Invalidate review
+function invalidateReview($reviewId) {
+    global $connection;
+
+    $query = "UPDATE reviews
+            SET is_valid = 0
+            WHERE review_id = $reviewId";
+
+    $result = $connection->prepare($query);
+    $result->execute();
+}
+
+// Delete review
+function deleteReview($reviewId) {
+    global $connection;
+
+    $query = "DELETE FROM reviews WHERE review_id = $reviewId";
+
+    $result = $connection->prepare($query);
+    $result->execute();
+}
