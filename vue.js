@@ -90,7 +90,7 @@ const Home = {
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <!-- <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@ const ProductSheet = {
                     <!-- PRODUCT IMAGES -->
                     <div class="col-md-1 col-lg-1 px-0 align-self-center" align="center">
                         <div class="product-extra-img mb-2 border">
-                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                            <img :src="getExtraImgUrl(product.extra_img1)" alt="product-image">
                         </div>
                         <div class="product-extra-img mb-2 border">
                             <img :src="getImgUrl(product.img_name)" alt="product-image">
@@ -297,6 +297,9 @@ const ProductSheet = {
     methods: {
         getImgUrl(picture) {
             return "./assets/" + picture;
+        },
+        getExtraImgUrl(picture) {
+            return "./assets/extraImg/" + picture;
         },
         selectCartId() {
             axios

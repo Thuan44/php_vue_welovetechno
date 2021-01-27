@@ -91,11 +91,7 @@ if (isset($_POST['add'])) {
                         <input type="file" name="file[]" multiple="multiple" class="custom-file-input" id="inputGroupFile02">
                         <label class="custom-file-label" for="inputGroupFile02">Choose a file</label>
                     </div>
-                    <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
-                    </div>
                 </div>
-            </div>
 
             <!-- Add Button -->
             <button type="submit" name="add" class="btn btn-dark btn-md btn-block btn-midradius">Add to Database</button>

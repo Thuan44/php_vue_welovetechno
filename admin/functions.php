@@ -1,17 +1,6 @@
 <?php
 session_start();
 
-?>
-
-<!-- <?php $session_value=(isset($_SESSION['user_id']))?$_SESSION['user_id']:''; ?>
-    <script type="text/javascript">
-        var userId='<?php echo $session_value;?>';
-    </script>
-    <script type="text/javascript" src="../vue.js"></script> -->
-
-
-<?php 
-
 # LOGIN ================
 function login($userEmail, $userPassword) {
     global $connection; 
@@ -146,6 +135,10 @@ function updateProduct($productId, $productName, $productPrice, $productStock, $
         ':productStock' => $productStock,
         ':productDescription' => $productDescription
     ));
+
+    if (isset($_FILES['extra-img'])) {
+        uploadExtraImg($productId);
+    }
 }
 
 // Delete Product
@@ -194,13 +187,60 @@ function getImgName($target_path, $productId) {
     
     global $connection;
     
-    $query = "INSERT INTO images (img_name, product_id) VALUES (:imgName, :productId)";
+    $query = "INSERT INTO images (img_name, product_id, extra_img1) VALUES (:imgName, :productId, '')";
     $result = $connection->prepare($query);
     $result->execute(array( 
         ':imgName' => $target_path,
         ':productId' => $productId
     ));
 
+}
+
+
+# UPLOAD EXTRA IMAGES =================
+function uploadExtraImg($productId) {
+
+    $j = 0; // Variable for indexing uploaded image
+
+    $target_path = "../assets/extraImg/"; // Declaring path for uploaded images
+
+        for ($i = 0; $i < count($_FILES['extra-img']['name']); $i++) { // Loop to get individual element from array
+            $validextensions = array ("jpeg", "jpg", "png"); // Extensions which are allowed
+
+            $ext = explode('.', basename($_FILES['extra-img']['name'][$i])); // Explode file name from dot(.) (like split in js)
+            $file_extension = end($ext); // Store extension in the variable
+
+            $target_path = $target_path . uniqid() .  "." . $ext[count($ext) - 1]; // Set the target path with a new name of image. md5 encrypts.  
+    
+            $j++; // increment the number of uploaded images according to the files in array
+
+            if (($_FILES['extra-img']['size'][$i] < 300000) //Approx. 100kb files can be upload.  
+                && in_array($file_extension, $validextensions)) {
+                if (move_uploaded_file($_FILES['extra-img']['tmp_name'][$i], $target_path)) { // If file moved to uploads folder
+                    echo $j. ').<span id="noerror">Image uploaded successfully!.</span><br/><br/>';
+                    insertExtraImg(basename($target_path), $productId);
+                } else { // If file was not moved
+                    echo $j. ').<span id="error">Please try again !</span><br/><br/>';
+                }
+            }  else { // If file size and tpye was incorrect
+                echo $j. ').<span id="error">***Invalid file Size or Type***</span><br/><br/>';
+            }           
+        } 
+
+}
+
+function insertExtraImg($target_path, $productId) {
+    
+    global $connection;
+
+    $query = "UPDATE images 
+            SET extra_img1 = :extraImgName
+            WHERE product_id = $productId";
+
+     $result = $connection->prepare($query);
+     $result->execute(array( 
+         ':extraImgName' => $target_path,
+     ));
 }
 
 

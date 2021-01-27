@@ -61,7 +61,7 @@ if($received_data->action == 'fetchselectedproduct')
 
     $query = "SELECT * FROM products
             INNER JOIN brands ON products.brand_id = brands.brand_id
-            INNER JOIN images ON products.product_id = images.product_id
+            -- INNER JOIN images ON products.product_id = images.product_id
             WHERE product_id = $productId";
     $result = $connect->prepare($query);
     $result->execute();

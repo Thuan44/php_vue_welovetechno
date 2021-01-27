@@ -33,7 +33,7 @@ $listProducts = listProducts($categoryId, $brandId);
 <div class="container">
     <h1 class="rounded border p-2 mt-5 mb-4 text-center text-white bg-dark">Update a product</h1>
 
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" enctype="multipart/form-data" method="POST">
 
         <fieldset>
 
@@ -115,15 +115,12 @@ $listProducts = listProducts($categoryId, $brandId);
                     <textarea class="form-control" name="product_description" id="Product Description" value="Product Description" rows="3" style="color: #919AA1;"><?= @$getProductById['product_description'] ?></textarea>
                 </div>
 
-                <!-- Upload image -->
+                <!-- Upload extra image -->
                 <div class="form-group">
                     <div class="input-group mb-3">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile02">
-                            <label class="custom-file-label" for="inputGroupFile02">Choose a new image</label>
-                        </div>
-                        <div class="input-group-append">
-                            <span class="input-group-text">Upload</span>
+                        <div class="custom-file">a
+                            <input type="file" name="extra-img[]" multiple="multiple" class="custom-file-input" id="inputGroupFile02">
+                            <label class="custom-file-label" for="inputGroupFile02">Extra image 1</label>
                         </div>
                     </div>
                 </div>
