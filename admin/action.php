@@ -52,6 +52,28 @@ if($received_data->action == 'fetchallbrands')
 
 
 
+# PRODUCT SHEET ==============================
+if($received_data->action == 'fetchselectedproduct')
+{
+
+    $data = (object) '';
+    $productId = $received_data->productId;
+
+    $query = "SELECT * FROM products
+            INNER JOIN brands ON products.brand_id = brands.brand_id
+            INNER JOIN images ON products.product_id = images.product_id
+            WHERE product_id = $productId";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data = $row;
+    }
+    echo json_encode($data);
+}
+
+
+
 # REVIEWS ====================================
 if($received_data->action == 'addreview')
 {
@@ -91,7 +113,25 @@ if($received_data->action == 'fetchallreviews')
 }
 
 
+
+
 # ADD TO CART ====================================
+// Select cart id
+if($received_data->action == 'selectcartid')
+{
+    global $userId;
+    $productId = $received_data->productId;
+
+    $query = "SELECT * FROM cart WHERE product_id = $productId AND user_id = $userId";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data[] = $row;
+    }
+    echo json_encode($data);
+}
+
 // Add single product
 if($received_data->action == 'addsingleproducttocart')
 {
@@ -101,17 +141,46 @@ if($received_data->action == 'addsingleproducttocart')
         ':productId' => $received_data->productId
     );
 
-    $query = "INSERT INTO cart (product_id, user_id, product_quantity) 
-            VALUES (:productId, $userId, 1)";
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
+    $result = $connect->prepare($query);
+    $result->execute($data);
+
+    if ($userId) {
+        $output = array(
+            'message' => 'Product added to your cart !'
+        );
+    } else {
+        $output = array(
+            'message' => 'You need to login first to access your cart'
+        );
+    }
+
+    echo json_encode($output);
+}
+
+// Increment quantity of product
+if($received_data->action == 'incrementproductquantity')
+{
+    global $userId;
+
+    $data = array(
+        ':productId' =>  $received_data->productId
+    );
+
+    $query = "UPDATE cart
+            SET product_quantity = product_quantity + 1
+            WHERE product_id = :productId AND user_id = $userId";
     $result = $connect->prepare($query);
     $result->execute($data);
 
     $output = array(
-        'message' => 'Product added to your cart !'
+        'message' => 'Quantity updated !'
     );
 
     echo json_encode($output);
 }
+
+
 
 
 # CART =================================

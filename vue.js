@@ -44,16 +44,16 @@ const Home = {
                             </header>
                             <div class="filter-content">
                                 <div class="card-body">
-                                <div class="form-row">
-                                <div class="form-group col-md-6">
-                                <label>Min</label>
-                                <input type="number" class="form-control" id="inputEmail4" placeholder="$0">
-                                </div>
-                                <div class="form-group col-md-6 text-right">
-                                <label>Max</label>
-                                <input type="number" class="form-control" placeholder="$2,0000">
-                                </div>
-                                </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Min</label>
+                                            <input type="number" class="form-control" id="inputEmail4" placeholder="$0">
+                                        </div>
+                                        <div class="form-group col-md-6 text-right">
+                                            <label>Max</label>
+                                            <input type="number" class="form-control" placeholder="$2,0000">
+                                        </div>
+                                    </div>
                                 </div> <!-- card-body.// -->
                             </div>
                         </article> <!-- card-group-item.// -->
@@ -112,7 +112,7 @@ const Home = {
                                         <h4 class="product-price">\${{ product.product_price }}</h4>
                                         <div class="d-flex justify-content-center">
                                             <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button>
+                                            <!-- <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -228,7 +228,7 @@ const ProductSheet = {
                             <div>
                                 <div class="product-divider"></div>
                                 <div class="product-validation float-right">
-                                    <button @click="addToCart(product.product_id)" type="submit" class="btn btn-outline-success btn-sm rounded shadow-sm">Add  to cart</button></td>
+                                    <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" type="submit" class="btn btn-outline-success btn-sm rounded shadow-sm">Add  to cart</button></td>
                                 </div>
                             </div>
                         </div>
@@ -286,8 +286,10 @@ const ProductSheet = {
     name: 'ProductSheet',
     data() {
         return {
+            selectedCartId: '',
             selectedId: this.$route.params.id,
             product: this.$route.params.product,
+            selectedProduct: {},
             reviewContent: '',
             reviewsByProduct: '',
         }
@@ -296,13 +298,32 @@ const ProductSheet = {
         getImgUrl(picture) {
             return "./assets/" + picture;
         },
-        addToCart(productId) {
+        selectCartId() {
             axios
                 .post('./admin/action.php', {
-                    action: 'addsingleproducttocart',
-                    productId: productId
+                    action: 'selectcartid',
+                    productId: this.selectedId,
                 })
-                .then(response => alert(response.data.message))
+                .then(response => (this.selectedCartId = response.data))
+        },
+        addToCart(productId) {
+            if (this.selectedCartId == '') {
+                // Add article to cart
+                axios
+                    .post('./admin/action.php', {
+                        action: 'addsingleproducttocart',
+                        productId: productId
+                    })
+                    .then(response => alert(response.data.message))
+            } else {
+                // Increment product quantity
+                axios
+                    .post('./admin/action.php', {
+                        action: 'incrementproductquantity',
+                        productId: this.selectedId
+                    })
+                    .then(response => alert(response.data.message))
+            }
         },
         addReview(productId) {
             axios
@@ -321,10 +342,20 @@ const ProductSheet = {
                     productId: this.selectedId
                 })
                 .then(response => (this.reviewsByProduct = response.data))
+        },
+        fetchSelectedProduct() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchselectedproduct',
+                    productId: this.selectedId
+                })
+                .then(response => (this.selectedProduct = response.data))
         }
     },
     created() {
+        this.selectCartId();
         this.fetchAllReviews();
+        this.fetchSelectedProduct();
     }
 }
 
@@ -395,7 +426,6 @@ const Contact = {
 const Cart = {
     template: `
     <div>
-
     
         <div class="container page-container">
 
@@ -418,7 +448,7 @@ const Cart = {
                     <tr v-for="product in allProductsInCart" v-bind:key="product.cart_id" class="table-light text-center">
                         <td class="align-middle" scope="row"><button @click="deleteProduct(product, product.cart_id)" type="submit" class="btn text-danger btn-cart-delete rounded"><i class="fas fa-trash-alt"></i></button></td>
                         <td class="align-middle"><div class="cart-img"><img :src="getImgUrl(product.img_name)" /></div></td>
-                        <td class="align-middle text-left">{{ product.product_name }}</td>
+                        <td class="align-middle text-left"><router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}">{{ product.product_name }}</router-link></td>
                         <td class="align-middle">
                             <button @click="updateQuantity(product, 'substract', product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-minus"></i></button>
                             <input @change="updateQuantity(product, 'manualUpdate', product.cart_id, product.product_quantity)" type="number" min="1" step="1" v-model.number="product.product_quantity" class="input-quantity">
@@ -472,10 +502,10 @@ const Cart = {
                         if (this.allProductsInCart[i].product_quantity > 1) {
                             this.allProductsInCart[i].product_quantity--;
                         }
-                        // Increment
+                    // Increment
                     } else if (updateType === 'add') {
                         this.allProductsInCart[i].product_quantity++;
-                        // V-model input changed
+                     // V-model input changed
                     } else {
                         axios
                             .post('./admin/action.php', {

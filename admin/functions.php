@@ -163,7 +163,7 @@ function uploadImg($productId) {
 
     $j = 0; // Variable for indexing uploaded image
 
-    $target_path = "../assets/"; // Declaring Path for uploaded images
+    $target_path = "../assets/"; // Declaring path for uploaded images
 
         for ($i = 0; $i < count($_FILES['file']['name']); $i++) { // Loop to get individual element from array
             $validextensions = array ("jpeg", "jpg", "png"); // Extensions which are allowed
