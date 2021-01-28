@@ -38,6 +38,7 @@ const Home = {
 
                 <aside class="filter-sidebar">
                     <div class="card">
+
                         <article class="card-group-item">
                             <header class="card-header">
                                 <h6 class="title">Price </h6>
@@ -57,10 +58,25 @@ const Home = {
                                 </div> <!-- card-body.// -->
                             </div>
                         </article> <!-- card-group-item.// -->
+
                         <article class="card-group-item">
+                        
                             <header class="card-header">
                                 <h6 class="title">Brands</h6>
                             </header>
+
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div v-for="product in allCategories">
+                                        <div class="custom-control custom-checkbox">
+                                            <span class="float-right badge badge-light round">7</span>
+                                            <input type="checkbox" class="custom-control-input" :id="product.category_name" :value="product.category_name" v-model="selectedCategories">
+                                            <label class="custom-control-label" :for="product.category_name">{{ product.category_name }}</label>
+                                        </div> <!-- form-check.// -->
+                                    </div>
+                                </div> <!-- card-body.// -->
+                            </div>
+
                             <div class="filter-content">
                                 <div class="card-body">
                                     <div v-for="product in allBrands">
@@ -72,7 +88,9 @@ const Home = {
                                     </div>
                                 </div> <!-- card-body.// -->
                             </div>
+
                         </article> <!-- card-group-item.// -->
+                        
                     </div> <!-- card.// -->
                 </aside> <!-- col.// -->
 
@@ -185,9 +203,9 @@ const ProductSheet = {
 
                     <!-- PRODUCT IMAGES -->
                     <div class="col-md-1 col-lg-1 px-0 align-self-center" align="center">
-                        <!-- <div v-if="relatedImg.extra_img1 !== '' " class="product-extra-img mb-2 border">
+                        <div v-if="relatedImg.extra_img1 !== '' " class="product-extra-img mb-2 border">
                             <img :src="getExtraImgUrl(relatedImg.extra_img1)" alt="product-image">
-                        </div> -->
+                        </div>
                         <div class="product-extra-img mb-2 border">
                             <img :src="getImgUrl(relatedImg.img_name)" alt="product-image">
                         </div>
