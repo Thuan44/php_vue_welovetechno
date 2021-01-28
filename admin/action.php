@@ -8,10 +8,11 @@ $data = array();
 @$userId = $_SESSION['user_id'];
 
 # FETCH TABLES ====================================
-// Get all products joined with brands and images
+// Get all products joined with categories, brands and images
 if($received_data->action == 'fetchallproducts')
 {
     $query = "SELECT * FROM products
+            INNER JOIN categories ON products.category_id = categories.category_id
             INNER JOIN brands ON products.brand_id = brands.brand_id
             INNER JOIN images ON products.product_id = images.product_id
             ORDER BY product_name ASC";

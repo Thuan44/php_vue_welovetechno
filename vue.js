@@ -60,9 +60,9 @@ const Home = {
                         </article> <!-- card-group-item.// -->
 
                         <article class="card-group-item">
-                        
+
                             <header class="card-header">
-                                <h6 class="title">Brands</h6>
+                                <h6 class="title">Categories</h6>
                             </header>
 
                             <div class="filter-content">
@@ -76,6 +76,10 @@ const Home = {
                                     </div>
                                 </div> <!-- card-body.// -->
                             </div>
+
+                            <header class="card-header">
+                                <h6 class="title">Brands</h6>
+                            </header>
 
                             <div class="filter-content">
                                 <div class="card-body">
@@ -94,7 +98,7 @@ const Home = {
                     </div> <!-- card.// -->
                 </aside> <!-- col.// -->
 
-                <div v-if="selectedBrands.length > 0">
+                <div v-if="selectedCategories.length > 0 || selectedBrands.length > 0">
                     <div class="row justify-content-center cards-container">
                         <div v-for="product in filteredProducts" v-bind:key="product.product_id" class="mt-4">
                             <div class="col-4">
@@ -146,14 +150,25 @@ const Home = {
     name: 'Home',
     data: () => {
         return {
+            selectedCategories: [],
             selectedBrands: [],
             allProducts: '',
+            allCategories: '',
             allBrands: '',
         }
     },
     computed: {
         filteredProducts() {
-            let filteredProducts = this.allProducts.filter(product => this.selectedBrands.includes(product.brand_name));
+            let filteredProducts;
+
+            if (this.selectedCategories.length && this.selectedBrands.length) {
+                filteredProducts = this.allProducts.filter(product => this.selectedCategories.includes(product.category_name) && this.selectedBrands.includes(product.brand_name));
+            } else if (this.selectedCategories.length) {
+                filteredProducts = this.allProducts.filter(product => this.selectedCategories.includes(product.category_name));
+            } else {
+                filteredProducts = this.allProducts.filter(product => this.selectedBrands.includes(product.brand_name));
+            }
+
             return filteredProducts;
         },
     },
@@ -176,7 +191,14 @@ const Home = {
                     action: 'fetchallproducts'
                 }).then(response => (this.allProducts = response.data))
         },
-        // Get all products from database
+        // Get all categories from database
+        fetchAllCategories() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchallcategories'
+                }).then(response => (this.allCategories = response.data))
+        },
+        // Get all brands from database
         fetchAllBrands() {
             axios
                 .post('./admin/action.php', {
@@ -187,6 +209,7 @@ const Home = {
     created() {
         // Call fetchAll functions
         this.fetchAllProducts();
+        this.fetchAllCategories();
         this.fetchAllBrands();
     },
 }
