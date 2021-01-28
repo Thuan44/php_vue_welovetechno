@@ -36,114 +36,120 @@ const Home = {
                 <h1 class="mt-5 text-center" style="font-family: 'Fjalla One', sans-serif;">All our products</h1><p class="text-center" style="color: #777">The best high-tech devices at the lowest possible price</p>
                 <div class="divider"></div>
 
-                <aside class="filter-sidebar">
-                    <div class="card">
+                <div class="centering-container">
 
-                        <article class="card-group-item">
-                            <header class="card-header">
-                                <h6 class="title">Price </h6>
-                            </header>
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label>Min</label>
-                                            <input type="number" class="form-control" id="inputEmail4" placeholder="$0">
+                    <aside class="filter-sidebar d-inline-block">
+                        <div class="card">
+
+                            <article class="card-group-item">
+
+                                <header class="card-header">
+                                    <h6 class="title m-0">Price </h6>
+                                </header>
+
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Min</label>
+                                                <input type="number" class="form-control border" id="inputEmail4" placeholder="$0">
+                                            </div>
+                                            <div class="form-group col-md-6 text-right">
+                                                <label>Max</label>
+                                                <input type="number" class="form-control border" placeholder="$2,000">
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-6 text-right">
-                                            <label>Max</label>
-                                            <input type="number" class="form-control" placeholder="$2,0000">
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- card-group-item.// -->
+
+                            <article class="card-group-item">
+
+                                <header class="card-header">
+                                    <h6 class="title m-0">Categories</h6>
+                                </header>
+
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div v-for="product in allCategories">
+                                            <div class="custom-control custom-checkbox">
+                                                <span class="float-right badge badge-light round">7</span>
+                                                <input type="checkbox" class="custom-control-input" :id="product.category_name" :value="product.category_name" v-model="selectedCategories">
+                                                <label class="custom-control-label" :for="product.category_name">{{ product.category_name }}</label>
+                                            </div> <!-- form-check.// -->
                                         </div>
-                                    </div>
-                                </div> <!-- card-body.// -->
-                            </div>
-                        </article> <!-- card-group-item.// -->
+                                    </div> <!-- card-body.// -->
+                                </div>
 
-                        <article class="card-group-item">
+                                <header class="card-header">
+                                    <h6 class="title m-0">Brands</h6>
+                                </header>
 
-                            <header class="card-header">
-                                <h6 class="title">Categories</h6>
-                            </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div v-for="product in allBrands">
+                                            <div class="custom-control custom-checkbox">
+                                                <span class="float-right badge badge-light round">7</span>
+                                                <input type="checkbox" class="custom-control-input" :id="product.brand_name" :value="product.brand_name" v-model="selectedBrands">
+                                                <label class="custom-control-label" :for="product.brand_name">{{ product.brand_name }}</label>
+                                            </div> <!-- form-check.// -->
+                                        </div>
+                                    </div> <!-- card-body.// -->
+                                </div>
 
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div v-for="product in allCategories">
-                                        <div class="custom-control custom-checkbox">
-                                            <span class="float-right badge badge-light round">7</span>
-                                            <input type="checkbox" class="custom-control-input" :id="product.category_name" :value="product.category_name" v-model="selectedCategories">
-                                            <label class="custom-control-label" :for="product.category_name">{{ product.category_name }}</label>
-                                        </div> <!-- form-check.// -->
-                                    </div>
-                                </div> <!-- card-body.// -->
-                            </div>
+                            </article> <!-- card-group-item.// -->
+                            
+                        </div> <!-- card.// -->
+                    </aside>
 
-                            <header class="card-header">
-                                <h6 class="title">Brands</h6>
-                            </header>
-
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div v-for="product in allBrands">
-                                        <div class="custom-control custom-checkbox">
-                                            <span class="float-right badge badge-light round">7</span>
-                                            <input type="checkbox" class="custom-control-input" :id="product.brand_name" :value="product.brand_name" v-model="selectedBrands">
-                                            <label class="custom-control-label" :for="product.brand_name">{{ product.brand_name }}</label>
-                                        </div> <!-- form-check.// -->
-                                    </div>
-                                </div> <!-- card-body.// -->
-                            </div>
-
-                        </article> <!-- card-group-item.// -->
-                        
-                    </div> <!-- card.// -->
-                </aside> <!-- col.// -->
-
-                <div v-if="selectedCategories.length > 0 || selectedBrands.length > 0">
-                    <div class="row justify-content-center cards-container">
-                        <div v-for="product in filteredProducts" v-bind:key="product.product_id" class="mt-4">
-                            <div class="col-4">
-                                <div class="card product-card shadow-sm p-3" style="width: 20rem;">
-                                    <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
-                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost Sold Out !</p>
-                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
-                                    <div class="card-body d-flex flex-column -justify-content-center">
-                                        <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
-                                        <p class="card-text mb-3">{{ product.brand_name }}</p>
-                                        <h4 class="product-price">\${{ product.product_price }}</h4>
-                                        <div class="d-flex justify-content-center">
-                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <!-- <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button> -->
+                    <div v-if="selectedCategories.length > 0 || selectedBrands.length > 0" class="d-inline-block product-container">
+                        <div class="d-flex justify-content-center cards-container flex-wrap">
+                            <div v-for="product in filteredProducts" v-bind:key="product.product_id" class="mt-4">
+                                <div class="col-4">
+                                    <div class="card product-card shadow-sm p-3" style="width: 20rem;">
+                                        <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
+                                        <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost Sold Out !</p>
+                                        <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
+                                        <div class="card-body d-flex flex-column -justify-content-center">
+                                            <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
+                                            <p class="card-text mb-3">{{ product.brand_name }}</p>
+                                            <h4 class="product-price">\${{ product.product_price }}</h4>
+                                            <div class="d-flex justify-content-center">
+                                                <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                                <!-- <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button> -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div v-else>
-                    <div class="row justify-content-center cards-container">
-                        <div v-for="product in allProducts" v-bind:key="product.product_id" class="mt-4">
-                            <div class="col-4">
-                                <div class="card product-card shadow-sm p-3" style="width: 20rem;">
-                                    <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
-                                    <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost sold out !</p>
-                                    <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
-                                    <div class="card-body d-flex flex-column -justify-content-center">
-                                        <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
-                                        <p class="card-text mb-3">{{ product.brand_name }}</p>
-                                        <h4 class="product-price">\${{ product.product_price }}</h4>
-                                        <div class="d-flex justify-content-center">
-                                            <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
-                                            <!-- <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button> -->
+                    <div v-else class="d-inline-block product-container">
+                        <div class="d-flex justify-content-center cards-container flex-wrap">
+                            <div v-for="product in allProducts" v-bind:key="product.product_id" class="mt-4">
+                                <div class="col-4">
+                                    <div class="card product-card shadow-sm p-3" style="width: 20rem;">
+                                        <img class="card-img-top" :src="getImgUrl(product.img_name)" alt="Card image cap">
+                                        <p v-if="product.product_stock <= 10 && product.product_stock > 0" class="card-text stock lead text-center"><i class="fas fa-exclamation-circle"></i> Almost sold out !</p>
+                                        <p v-if="product.product_stock == 0" class="card-text stock lead text-center text-danger"><i class="fas fa-sad-tear"></i> OUT OF STOCK !</p>
+                                        <div class="card-body d-flex flex-column -justify-content-center">
+                                            <h5 class="card-title mb-1" style="font-family: 'Tajawal', sans-serif;">{{ product.product_name }}</h5>
+                                            <p class="card-text mb-3">{{ product.brand_name }}</p>
+                                            <h4 class="product-price">\${{ product.product_price }}</h4>
+                                            <div class="d-flex justify-content-center">
+                                                <router-link :to="{name: 'ProductSheet', params: { id: product.product_id, product: product }}" class="btn btn-dark rounded-lg btn-card text-capitalize mr-2"><i class="far fa-eye"></i></router-link>
+                                                <!-- <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" class="btn btn-warning rounded-lg btn-card text-capitalize"><i class="fas fa-cart-plus"></i></button> -->
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    </div> <!-- card.// -->
+                                </div> <!-- col.// -->
+                            </div> <!-- v-for.// -->
+                        </div> 
+                    </div> <!-- v-else.// -->
 
-            </div>
+                </div> <!-- centering-container.// -->
+
+            </div> <!-- container-fluid.// -->
         
         </div>
     `,
@@ -318,7 +324,7 @@ const ProductSheet = {
                             </div>  <!-- col.// -->
                         </div> <!-- row.// -->
                     </div> <!-- card-body.// -->
-                </div> <!-- card.// -->
+                </div> <!-- v-for.// -->
 
             </div> <!-- container.// -->
             
