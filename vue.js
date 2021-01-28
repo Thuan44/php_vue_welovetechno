@@ -185,23 +185,23 @@ const ProductSheet = {
 
                     <!-- PRODUCT IMAGES -->
                     <div class="col-md-1 col-lg-1 px-0 align-self-center" align="center">
+                        <!-- <div v-if="relatedImg.extra_img1 !== '' " class="product-extra-img mb-2 border">
+                            <img :src="getExtraImgUrl(relatedImg.extra_img1)" alt="product-image">
+                        </div> -->
                         <div class="product-extra-img mb-2 border">
-                            <img :src="getExtraImgUrl(product.extra_img1)" alt="product-image">
+                            <img :src="getImgUrl(relatedImg.img_name)" alt="product-image">
                         </div>
                         <div class="product-extra-img mb-2 border">
-                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                            <img :src="getImgUrl(relatedImg.img_name)" alt="product-image">
                         </div>
                         <div class="product-extra-img mb-2 border">
-                            <img :src="getImgUrl(product.img_name)" alt="product-image">
-                        </div>
-                        <div class="product-extra-img mb-2 border">
-                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                            <img :src="getImgUrl(relatedImg.img_name)" alt="product-image">
                         </div>
                     </div> <!-- col.// -->
 
                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 pr-4 align-self-center">
                         <div class="product-img">
-                            <img :src="getImgUrl(product.img_name)" alt="product-image">
+                            <img :src="getImgUrl(relatedImg.img_name)" alt="product-image">
                             <p class="font-italic text-center" style="color: rgba(50, 50, 50, .4)">Hover the thumbnails to see more images</p>
                         </div>
                     </div> <!-- col.// -->
@@ -288,8 +288,9 @@ const ProductSheet = {
         return {
             selectedCartId: '',
             selectedId: this.$route.params.id,
-            product: this.$route.params.product,
+            product: '',
             selectedProduct: {},
+            relatedImg: {},
             reviewContent: '',
             reviewsByProduct: '',
         }
@@ -352,13 +353,22 @@ const ProductSheet = {
                     action: 'fetchselectedproduct',
                     productId: this.selectedId
                 })
-                .then(response => (this.selectedProduct = response.data))
+                .then(response => (this.product = response.data))
+        },
+        fetchRelatedImg() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'fetchrelatedimg',
+                    productId: this.selectedId
+                })
+                .then(response => (this.relatedImg = response.data))
         }
     },
     created() {
         this.selectCartId();
         this.fetchAllReviews();
         this.fetchSelectedProduct();
+        this.fetchRelatedImg();
     }
 }
 

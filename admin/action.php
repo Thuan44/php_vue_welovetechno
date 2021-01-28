@@ -53,6 +53,7 @@ if($received_data->action == 'fetchallbrands')
 
 
 # PRODUCT SHEET ==============================
+// Display product with no image
 if($received_data->action == 'fetchselectedproduct')
 {
 
@@ -63,6 +64,21 @@ if($received_data->action == 'fetchselectedproduct')
             INNER JOIN brands ON products.brand_id = brands.brand_id
             -- INNER JOIN images ON products.product_id = images.product_id
             WHERE product_id = $productId";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data = $row;
+    }
+    echo json_encode($data);
+}
+
+// Display img
+if($received_data->action == 'fetchrelatedimg')
+{
+    $productId = $received_data->productId;
+
+    $query = "SELECT * FROM images WHERE product_id = $productId";
     $result = $connect->prepare($query);
     $result->execute();
     while($row = $result->fetch(PDO::FETCH_ASSOC))
