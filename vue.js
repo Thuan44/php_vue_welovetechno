@@ -38,7 +38,7 @@ const Home = {
 
                 <div class="centering-container">
 
-                    <aside class="filter-sidebar d-inline-block">
+                    <aside class="filter-sidebar d-inline-block shadow-sm">
                         <div class="card">
 
                             <article class="card-group-item">
@@ -232,8 +232,8 @@ const ProductSheet = {
 
                     <!-- PRODUCT IMAGES -->
                     <div class="col-md-1 col-lg-1 px-0 align-self-center" align="center">
-                        <div v-if="relatedImg.extra_img1 !== '' " class="product-extra-img mb-2 border">
-                            <img :src="getExtraImgUrl(relatedImg.extra_img1)" alt="product-image">
+                        <div v-if="relatedImg.extra_img1 != '' " class="product-extra-img mb-2 border">
+                            <img :src="getExtraImgUrl(relatedImg.extra_img1)" alt="extra-product-image">
                         </div>
                         <div class="product-extra-img mb-2 border">
                             <img :src="getImgUrl(relatedImg.img_name)" alt="product-image">
@@ -275,7 +275,7 @@ const ProductSheet = {
                             <div>
                                 <div class="product-divider"></div>
                                 <div class="product-validation float-right">
-                                    <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id)" type="submit" class="btn btn-outline-success btn-sm rounded shadow-sm">Add  to cart</button></td>
+                                    <button :disabled="product.product_stock == 0" @click="addToCart(product.product_id); showToast()" type="submit" class="btn btn-outline-success btn-sm rounded shadow-sm" id="add-to-cart">Add  to cart</button></td>
                                 </div>
                             </div>
                         </div>
@@ -326,6 +326,33 @@ const ProductSheet = {
                     </div> <!-- card-body.// -->
                 </div> <!-- v-for.// -->
 
+                <!-- TOAST -->
+                <div class="toast" id="toast" style="position: fixed; top: 150px; right: 50px;" data-delay="8000">
+                    <div class="toast-header bg-primary">
+                        <strong class="mr-auto text-white"><i class="fas fa-smile-beam text-warning"></i> Thank you !</strong>
+                        <small class="text-white">Just now</small>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        Your cart has been updated !
+                    </div>
+                </div> <!-- toast.// -->
+
+                <div class="toast" id="toast-not-logged" style="position: fixed; top: 150px; right: 50px;" data-delay="8000">
+                    <div class="toast-header bg-primary">
+                        <strong class="mr-auto text-white"><i class="fas fa-surprise text-warning"></i> Oops !</strong>
+                        <small class="text-white">Just now</small>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        You need to login first to access your cart !
+                    </div>
+                </div> <!-- toast.// -->
+
             </div> <!-- container.// -->
             
         </div>
@@ -333,6 +360,7 @@ const ProductSheet = {
     name: 'ProductSheet',
     data() {
         return {
+            currentUser: '',
             selectedCartId: '',
             selectedId: this.$route.params.id,
             product: '',
@@ -343,8 +371,16 @@ const ProductSheet = {
         }
     },
     methods: {
+        checkUser() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'checkuser'
+                })
+                .then(response => (this.currentUser = response.data))
+        },
         getImgUrl(picture) {
-            return "./assets/" + picture;
+            let $result = "./assets/" + picture;
+            return $result;
         },
         getExtraImgUrl(picture) {
             return "./assets/extraImg/" + picture;
@@ -365,7 +401,6 @@ const ProductSheet = {
                         action: 'addsingleproducttocart',
                         productId: productId
                     })
-                    .then(response => alert(response.data.message))
             } else {
                 // Increment product quantity
                 axios
@@ -373,7 +408,6 @@ const ProductSheet = {
                         action: 'incrementproductquantity',
                         productId: this.selectedId
                     })
-                    .then(response => alert(response.data.message))
             }
         },
         addReview(productId) {
@@ -409,9 +443,17 @@ const ProductSheet = {
                     productId: this.selectedId
                 })
                 .then(response => (this.relatedImg = response.data))
+        },
+        showToast() {
+            if(this.currentUser.length == 1) {
+                $('#toast').toast('show');
+            } else {
+                $('#toast-not-logged').toast('show');
+            }
         }
     },
     created() {
+        this.checkUser();
         this.selectCartId();
         this.fetchAllReviews();
         this.fetchSelectedProduct();
@@ -430,50 +472,52 @@ const Contact = {
             <h1 class="mt-5 text-center page-title" style="font-family: 'Fjalla One', sans-serif;">Contact</h1><p class="text-center" style="color: #777">Let's keep in touch !</p>
             <div class="divider"></div>
 
-        <div class="form-container shadow-sm rounded bg-white py-4 px-5" style="max-width: 600px; margin: 0 auto">
-            <form>
-                <fieldset>
-                    <legend class="text-center text-primary form-envelope m-0"><i class="fas fa-envelope"></i></legend>
-                <fieldset class="form-group d-flex justify-content-center my-3">
-                    <div class="form-check mr-5">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                            Say Hi
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
-                            Get assisted
-                        </label>
-                    </div>
-                </fieldset>
-                <div class="form-group">
-                    <label for="firstname">First name</label>
-                    <input type="text" class="form-control" id="firstname" placeholder="Enter your first name">
-                </div>
-                <div class="form-group">
-                    <label for="lastname">Last name</label>
-                    <input type="text" class="form-control" id="lastname" placeholder="Enter your last name">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                    <label for="object">Object</label>
-                    <input type="text" class="form-control" id="object" placeholder="Enter the object of your message">
-                </div>
-                <div class="form-group">
-                    <label for="message">Your message</label>
-                    <textarea class="form-control" id="message" rows="3"></textarea>
-                </div>
-                <div style="text-align: center">
-                    <button type="submit" class="btn btn-primary btn-submit-contact rounded shadow-sm mt-2"><i class="fas fa-paper-plane"></i></button>
-                </fieldset>
-                </div>
-            </form>
+            <div class="form-container shadow-sm rounded bg-white py-4 px-5" style="max-width: 600px; margin: 0 auto">
+                <form>
+                    <fieldset>
+                        <legend class="text-center text-primary form-envelope m-0"><i class="fas fa-envelope"></i></legend>
+                        <fieldset class="form-group d-flex justify-content-center my-3">
+                            <div class="form-check mr-5">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                                    Say Hi
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+                                    Get assisted
+                                </label>
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            <label for="firstname">First name</label>
+                            <input type="text" class="form-control" id="firstname" placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Last name</label>
+                            <input type="text" class="form-control" id="lastname" placeholder="Enter your last name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter your email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="object">Object</label>
+                            <input type="text" class="form-control" id="object" placeholder="Enter the object of your message">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your message</label>
+                            <textarea class="form-control" id="message" rows="3"></textarea>
+                        </div>
+                        <div style="text-align: center">
+                            <button type="submit" class="btn btn-primary btn-submit-contact rounded shadow-sm mt-2"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
         </div>
 
     </div>
@@ -487,7 +531,7 @@ const Cart = {
     template: `
     <div>
     
-        <div class="container page-container">
+        <div v-if="this.currentUser.length == 1" class="container page-container">
 
             <h1 class="mt-5 text-center cart-title" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your articles</p>
             <div class="divider"></div>
@@ -515,7 +559,7 @@ const Cart = {
                             <button @click="updateQuantity(product, 'add', product.cart_id)" type="button" class="btn btn-outline-secondary btn-quantity"><i class="fas fa-plus"></i></button>
                         </td>
                         <td class="align-middle">\${{ product.product_price }}</td>
-                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">\${{ product.product_price * product.product_quantity }}</td>
+                        <td class="text-right align-middle bg-secondary" style="border-left: 1px dashed rgba(26, 26, 26, .4) !important">\${{ (product.product_price * product.product_quantity).toFixed(2) }}</td>
                     </tr>
                 </tbody>
 
@@ -535,15 +579,28 @@ const Cart = {
 
         </div>
 
+        <div v-else>
+            <h2>Oops</h2>
+            <p>You need to login first to access your cart !</p>
+        </div>
+
     </div>
     `,
     name: 'Cart',
     data: () => {
         return {
+            currentUser: '',
             allProductsInCart: '',
         }
     },
     methods: {
+        checkUser() {
+            axios
+                .post('./admin/action.php', {
+                    action: 'checkuser'
+                })
+                .then(response => (this.currentUser = response.data))
+        },
         getImgUrl(picture) {
             return "./assets/" + picture;
         },
@@ -610,7 +667,7 @@ const Cart = {
         }
     },
     created() {
-        // Call function fetchAllCategories
+        this.checkUser();
         this.fetchAllProductsInCart();
     },
 }

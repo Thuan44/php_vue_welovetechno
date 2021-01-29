@@ -7,6 +7,21 @@ $data = array();
 
 @$userId = $_SESSION['user_id'];
 
+# CHECK IF USER IS LOGGED IN ======================
+if($received_data->action == 'checkuser')
+{
+    global $userId;
+
+    $query = "SELECT * FROM users WHERE user_id = $userId";
+    $result = $connect->prepare($query);
+    $result->execute();
+    while($row = $result->fetch(PDO::FETCH_ASSOC))
+    {
+        $data[] = $row;
+    }
+    echo json_encode($data);
+}
+
 # FETCH TABLES ====================================
 // Get all products joined with categories, brands and images
 if($received_data->action == 'fetchallproducts')
@@ -161,18 +176,6 @@ if($received_data->action == 'addsingleproducttocart')
     $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
     $result = $connect->prepare($query);
     $result->execute($data);
-
-    if ($userId) {
-        $output = array(
-            'message' => 'Product added to your cart !'
-        );
-    } else {
-        $output = array(
-            'message' => 'You need to login first to access your cart'
-        );
-    }
-
-    echo json_encode($output);
 }
 
 // Increment quantity of product
