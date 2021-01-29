@@ -22,6 +22,8 @@ if($received_data->action == 'checkuser')
     echo json_encode($data);
 }
 
+
+
 # FETCH TABLES ====================================
 // Get all products joined with categories, brands and images
 if($received_data->action == 'fetchallproducts')
@@ -92,11 +94,9 @@ if($received_data->action == 'fetchselectedproduct')
 // Display img
 if($received_data->action == 'fetchrelatedimg')
 {
-    $productId = $received_data->productId;
-
-    $query = "SELECT * FROM images WHERE product_id = $productId";
+    $query = "SELECT * FROM images WHERE product_id = ?";
     $result = $connect->prepare($query);
-    $result->execute();
+    $result->execute([$received_data->productId]);
     while($row = $result->fetch(PDO::FETCH_ASSOC))
     {
         $data = $row;
@@ -111,14 +111,9 @@ if($received_data->action == 'addreview')
 {
     global $userId;
 
-    $data = array(
-        ':productId' => $received_data->productId,
-        ':reviewContent' => $received_data->reviewContent
-    );
-
-    $query = "INSERT INTO reviews (product_id, user_id, review_content) VALUES (:productId, $userId, :reviewContent)";
+    $query = "INSERT INTO reviews (product_id, user_id, review_content) VALUES (?, $userId, ?)";
     $result = $connect->prepare($query);
-    $result->execute($data);
+    $result->execute([$received_data->productId, $received_data->reviewContent]);
 
     $output = array(
         'message' => 'Review posted !'
@@ -130,13 +125,11 @@ if($received_data->action == 'addreview')
 // Get reviews by product id
 if($received_data->action == 'fetchallreviews')
 {
-    $productId = $received_data->productId;
-
     $query = "SELECT * FROM reviews
             INNER JOIN users ON reviews.user_id = users.user_id
-            WHERE product_id = $productId AND is_valid = 1";
+            WHERE product_id = ? AND is_valid = 1";
     $result = $connect->prepare($query);
-    $result->execute();
+    $result->execute([$received_data->productId]);
     while($row = $result->fetch(PDO::FETCH_ASSOC))
     {
         $data[] = $row;
@@ -146,17 +139,15 @@ if($received_data->action == 'fetchallreviews')
 
 
 
-
-# ADD TO CART ====================================
+# ADD TO CART FROM PRODUCT SHEET ====================================
 // Select cart id
 if($received_data->action == 'selectcartid')
 {
     global $userId;
-    $productId = $received_data->productId;
 
-    $query = "SELECT * FROM cart WHERE product_id = $productId AND user_id = $userId";
+    $query = "SELECT * FROM cart WHERE product_id = ? AND user_id = $userId";
     $result = $connect->prepare($query);
-    $result->execute();
+    $result->execute([$received_data->productId]);
     while($row = $result->fetch(PDO::FETCH_ASSOC))
     {
         $data[] = $row;
@@ -169,13 +160,9 @@ if($received_data->action == 'addsingleproducttocart')
 {
     global $userId;
 
-    $data = array(
-        ':productId' => $received_data->productId
-    );
-
-    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (:productId, $userId, 1)";
+    $query = "INSERT INTO cart (product_id, user_id, product_quantity) VALUES (?, $userId, 1)";
     $result = $connect->prepare($query);
-    $result->execute($data);
+    $result->execute([$received_data->productId]);
 }
 
 // Increment quantity of product
@@ -183,15 +170,11 @@ if($received_data->action == 'incrementproductquantity')
 {
     global $userId;
 
-    $data = array(
-        ':productId' =>  $received_data->productId
-    );
-
     $query = "UPDATE cart
             SET product_quantity = product_quantity + 1
-            WHERE product_id = :productId AND user_id = $userId";
+            WHERE product_id = ? AND user_id = $userId";
     $result = $connect->prepare($query);
-    $result->execute($data);
+    $result->execute([$received_data->productId]);
 
     $output = array(
         'message' => 'Quantity updated !'
@@ -225,28 +208,19 @@ if($received_data->action == 'fetchallproductsincart')
 // Change quantity
 if($received_data->action == 'updatequantity')
 {
-    $data = array(
-        ':productQuantity' => $received_data->productQuantity,
-        ':cartId' => $received_data->cartId
-    );
-
     $query = "UPDATE cart
-            SET product_quantity = :productQuantity
-            WHERE cart_id = :cartId";
+            SET product_quantity = ?
+            WHERE cart_id = ?";
     $result = $connect->prepare($query);
-    $result->execute($data);
+    $result->execute([$received_data->productQuantity, $received_data->cartId]);
 }
 
 // Delete product from cart
 if($received_data->action == 'deleteproduct')
 {
-    $data = array(
-        ':cartId' => $received_data->cartId
-    );
-
-    $query = "DELETE FROM cart WHERE cart_id = :cartId";
+    $query = "DELETE FROM cart WHERE cart_id = ?";
     $result = $connect->prepare($query);
-    $result->execute($data);
+    $result->execute([$received_data->cartId]);
 }
 
 ?>

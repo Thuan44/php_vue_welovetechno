@@ -287,7 +287,7 @@ const ProductSheet = {
                 <h4 class="text-left mt-5 ml-5" style="font-family: 'Fjalla One', sans-serif;">Customer reviews</h4>
 
                 <!-- ADD REVIEW -->
-                <div class="card mx-5 my-3 rounded shadow-sm">
+                <div v-if="currentUser.length == 1" class="card mx-5 my-3 rounded shadow-sm">
                     <h5 class="card-header">Leave a review:</h5>
                     <div class="card-body">
                         <form action="" method="POST" v-on:submit.prevent="addreview">
@@ -531,9 +531,10 @@ const Cart = {
     template: `
     <div>
     
-        <div v-if="this.currentUser.length == 1" class="container page-container">
+        <div v-if="currentUser.length == 1" class="container page-container">
 
-            <h1 class="mt-5 text-center cart-title" style="font-family: 'Fjalla One', sans-serif;">Cart</h1><p class="text-center" style="color: #777">Summary of your articles</p>
+            <h1 class="mt-5 text-center cart-title" style="font-family: 'Fjalla One', sans-serif;">Cart</h1>
+            <p class="text-center" style="color: #777">Summary of your articles</p>
             <div class="divider"></div>
 
             <table class="table table-hover cart-table shadow-sm">
@@ -580,8 +581,9 @@ const Cart = {
         </div>
 
         <div v-else>
-            <h2>Oops</h2>
-            <p>You need to login first to access your cart !</p>
+            <h1 class="mt-5 text-center cart-title" style="font-family: 'Fjalla One', sans-serif;">Oops</h1>
+            <p class="text-center" style="color: #777">You need to login first to access your cart !</p>
+            <a href="login.php" class="text-center d-block" style="color: #979797"><small>Go to login page</small></a>
         </div>
 
     </div>
@@ -589,7 +591,7 @@ const Cart = {
     name: 'Cart',
     data: () => {
         return {
-            currentUser: '',
+            currentUser: '', // Check if user is logged
             allProductsInCart: '',
         }
     },
