@@ -12,7 +12,7 @@ body {
     padding: 0;
     margin: 0;
     background-color: #F9F9F9;
-    padding-bottom: 12rem;
+    padding-bottom: 16rem;
     min-height: 91.7vh;
     height: 100%;
 }
@@ -94,7 +94,7 @@ p {
 .greeting-guest {
     position: absolute;
     right: 60px;
-    top: 98px;
+    top: 22px;
 }
 
 
@@ -109,17 +109,6 @@ p {
 
 .back-office-card:hover{
     transform: scale(1.1);
-}
-
-
-.card-heading {
-    width: 300px;
-    font-weight: 900;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 
