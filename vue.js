@@ -41,6 +41,17 @@ const Home = {
                     <aside class="filter-sidebar d-inline-block shadow-sm">
                         <div class="card">
 
+                            <!-- Searchbar -->
+                            <article class="card-group-item">
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                                <label>Looking for something  ?</label>
+                                                <input type="search" class="form-control border w-100" id="searchbar" placeholder="Search a product" v-model="searchTerm">
+                                    </div> <!-- card-body.// -->
+                                </div>
+                            </article> <!-- card-group-item.// -->
+
+                            <!-- Price filter -->
                             <article class="card-group-item">
                                 <header class="card-header">
                                     <h6 class="title m-0">Price </h6>
@@ -62,11 +73,11 @@ const Home = {
                                 </div>
                             </article> <!-- card-group-item.// -->
 
+                            <!-- Category and Brand filters -->
                             <article class="card-group-item">
                                 <header class="card-header">
                                     <h6 class="title m-0">Categories</h6>
                                 </header>
-
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div v-for="product in allCategories">
@@ -82,7 +93,6 @@ const Home = {
                                 <header class="card-header">
                                     <h6 class="title m-0">Brands</h6>
                                 </header>
-
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div v-for="product in allBrands">
@@ -99,7 +109,7 @@ const Home = {
                         </div> <!-- card.// -->
                     </aside>
 
-                    <div v-if="selectedCategories.length > 0 || selectedBrands.length > 0" class="d-inline-block product-container">
+                    <div v-if=" selectedCategories.length > 0 || selectedBrands.length > 0 || searchTerm !== '' " class="d-inline-block product-container">
                         <div class="d-flex justify-content-center cards-container flex-wrap">
                             <div v-for="product in filteredProducts" v-bind:key="product.product_id" class="mt-4">
                                 <div class="col-4">
@@ -158,12 +168,21 @@ const Home = {
             allProducts: '',
             allCategories: '',
             allBrands: '',
+            searchTerm: '',
         }
     },
     computed: {
         filteredProducts() {
             let filteredProducts;
 
+            // Filter by name
+            if (this.searchTerm !== '') {
+                return filteredProducts = this.allProducts.filter((product) => { 
+                    return product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase());
+                })
+            }
+
+            // Filter by category and brand
             if (this.selectedCategories.length && this.selectedBrands.length) {
                 filteredProducts = this.allProducts.filter(product => this.selectedCategories.includes(product.category_name) && this.selectedBrands.includes(product.brand_name));
             } else if (this.selectedCategories.length) {
