@@ -32,7 +32,7 @@ if (isset($_POST['add'])) {
             <div class="row">
 
                 <!-- Categories -->
-                <div class="col-6">
+                <div class="col-xs-12 col-md-6">
                     <div class="form-group">
                         <select class="custom-select" name="category_id" onChange="submit()" required>
                             <option selected="">1. Select a category</option>
@@ -47,7 +47,7 @@ if (isset($_POST['add'])) {
                 </div>
 
                 <!-- Brands -->
-                <div class="col-6">
+                <div class="col-xs-12 col-md-6">
                     <div class="form-group">
                         <select class="custom-select" name="brand_id" onChange="submit()" required>
                             <option selected="">2. Select a brand</option>
@@ -62,17 +62,17 @@ if (isset($_POST['add'])) {
 
             <!-- Inputs -->
             <div class="row">
-                <div class="col-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <input class="form-control" type="text" name="product_name" placeholder="Choose a name">
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <input class="form-control" type="text" name="product_price" placeholder="Choose a price">
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <input class="form-control" type="text" name="product_stock" placeholder="Set the quantity in stock">
                     </div>

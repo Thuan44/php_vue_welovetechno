@@ -42,7 +42,6 @@ const Home = {
                         <div class="card">
 
                             <article class="card-group-item">
-
                                 <header class="card-header">
                                     <h6 class="title m-0">Price </h6>
                                 </header>
@@ -64,7 +63,6 @@ const Home = {
                             </article> <!-- card-group-item.// -->
 
                             <article class="card-group-item">
-
                                 <header class="card-header">
                                     <h6 class="title m-0">Categories</h6>
                                 </header>
@@ -96,7 +94,6 @@ const Home = {
                                         </div>
                                     </div> <!-- card-body.// -->
                                 </div>
-
                             </article> <!-- card-group-item.// -->
                             
                         </div> <!-- card.// -->
@@ -531,7 +528,7 @@ const Cart = {
     template: `
     <div>
     
-        <div v-if="currentUser.length == 1" class="container page-container">
+        <div v-if="currentUser.length == 1" class="container page-container cart-container">
 
             <h1 class="mt-5 text-center cart-title" style="font-family: 'Fjalla One', sans-serif;">Cart</h1>
             <p class="text-center" style="color: #777">Summary of your articles</p>
@@ -543,7 +540,7 @@ const Cart = {
                     <tr class="text-white text-center font-weight-bold" style="background-color: #1A1A1A !important">
                         <th scope="col"></th>
                         <th scope="col" colspan="2">Product</th>
-                        <th scope="col">Quantity</th>
+                        <th scope="col" class="quantity-col">Quantity</th>
                         <th scope="col">Unit Price</th>
                         <th scope="col" class="text-right">Total Price</th>
                     </tr>

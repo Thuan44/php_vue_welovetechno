@@ -43,7 +43,7 @@ $listProducts = listProducts($categoryId, $brandId);
             <div class="row">
 
                 <!-- Categories -->
-                <div class="col-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <select class="custom-select" name="category_id" onChange="submit()" required>
                             <option selected="">1. Select a category</option>
@@ -58,7 +58,7 @@ $listProducts = listProducts($categoryId, $brandId);
                 </div>
 
                 <!-- Brands -->
-                <div class="col-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <select class="custom-select" name="brand_id" onChange="submit()" required>
                             <option selected="">2. Select a brand</option>
@@ -73,7 +73,7 @@ $listProducts = listProducts($categoryId, $brandId);
                 </div>
 
                 <!-- Products -->
-                <div class="col-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="form-group">
                         <select class="custom-select" name="product_id" onChange="submit()" required>
                             <option>2. Select a product</option>
@@ -127,10 +127,10 @@ $listProducts = listProducts($categoryId, $brandId);
 
                 <!-- Buttons -->
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-xs-6 col-md-8">
                         <button type="submit" name="update" class="btn btn-info btn-md btn-block btn-midradius">Save Updates</button>
                     </div>
-                    <div class="col-4">
+                    <div class="col-xs-6 col-md-4">
                         <button type="submit" name="delete" class="btn btn-danger btn-md btn-block btn-midradius">Delete Product</button>
                     </div>
                 </div>

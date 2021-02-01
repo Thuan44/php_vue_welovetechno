@@ -1,6 +1,6 @@
 <footer class="bg-primary">
 
-    <div class="container-fluid d-flex justify-content-between align-items-center pt-4">
+    <div class="container-fluid d-flex justify-content-between align-items-center pt-4 footer-container">
         <div class="flags d-flex">
             <div class="flag-img mr-2">
                 <img class="w-100" src="./assets/img/france.png">

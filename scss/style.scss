@@ -3,13 +3,18 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     position: relative;
     padding: 0;
     margin: 0;
     background-color: #F9F9F9;
-    padding-bottom: 10rem;
+    padding-bottom: 12rem;
     min-height: 91.7vh;
+    height: 100%;
 }
 
 p {
@@ -381,8 +386,11 @@ footer {
 
 
 // MEDIA QUERIES ===========
+
+// Under Desktop //
 @media screen and (max-width: 992px) {
 
+    // Navbar
     .search-bar {
         position: absolute;
         left: 230px;
@@ -400,6 +408,7 @@ footer {
         display: none !important;
     }
 
+    // Home
     #carouselExampleIndicators {
         margin-top: 85px;
     }
@@ -407,18 +416,85 @@ footer {
     .page-container {
         padding-top: 90px;
     }
+
+    .centering-container {
+        flex-direction: column;
+        display: block !important;
+    }
+    
+    .filter-sidebar {
+        display: block !important;
+        width: 100% !important;
+        position: relative !important;
+        min-width: 325px !important;
+        top: 0;
+    }
+
+    .product-container {
+        display: block !important;
+    }
+
+    // Cart
+    .cart-container {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cart-table, .total-group {
+        transform: scale(.9);
+    }
+
+    .quantity-col {
+        min-width: 190px;
+    }
+
+    // Footer
+    footer {
+        bottom: 0px !important;
+    }
+
+}
+
+// Tablet //
+@media screen and (max-width: 768px) {
+
+    // Cart
+    .cart-table, .total-group {
+        transform: scale(.8);
+    }
+
+    // Footer 
+    footer {
+        height: 140px;
+
+    }
+
+    .footer-container {
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .flags, .copyright {
+        margin-bottom: 10px;
+    }
+
 }
 
 @media screen and (max-width: 710px) {
 
+    // Navbar
     .search-input {
         width: 150px !important;
     }
 
 }
 
+// Smartphones // 
 @media screen and (max-width: 580px) {
 
+    // Navbar
     .search-bar{
         display: none
     }

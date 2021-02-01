@@ -4,6 +4,9 @@ include_once './admin/functions.php';
 ?>
 
 <?php
+$nameError = $emailError = $passwordError = "";
+$isSuccess = false;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') { // if the request method used is POST
     $name = verifyInput($_POST['name']);
     $email = verifyInput($_POST['email']);
@@ -21,14 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // if the request method used is POS
 
     signUp($name, $email, $password);
 }
-
-@$name = $_POST['name'];
-@$email = $_POST['email'];
-@$password = $_POST['password'];
-
-$nameError = $emailError = $passwordError = $passwordCheckError = "";
-$isSuccess = false;
-
 ?>
 
 <!DOCTYPE html>
